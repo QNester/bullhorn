@@ -1,6 +1,6 @@
 module Bullhorn
   module Channels
-    class Email
+    class Base
 
     end
   end

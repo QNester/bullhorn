@@ -1,0 +1,11 @@
+events:
+  signed_up:
+    sms:
+      text: Hello!
+    push:
+      title: Hello title
+      body: Hello body!
+    email:
+      subject: Hello subject
+      body: Hello body
+

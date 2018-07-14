@@ -1,6 +1,6 @@
 module Bullhorn
-  module Channels
-    class Email
+  class Sender
+    def send
 
     end
   end

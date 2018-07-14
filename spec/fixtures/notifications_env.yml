@@ -1,0 +1,10 @@
+from_env:
+  signed_up:
+    sms:
+      text: Hello FROM ENV!
+    push:
+      title: Hello title FROM ENV
+      body: Hello body FROM ENV!
+    email:
+      subject: Hello subject FROM ENV
+      body: Hello body FROM ENV
