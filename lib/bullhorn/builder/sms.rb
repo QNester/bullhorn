@@ -6,7 +6,7 @@ module Bullhorn
       attr_reader :text
 
       def build
-        @text = interpolate(data['sms']['text'], options)
+        @text = interpolate(ch_data['text'], options)
       end
     end
   end

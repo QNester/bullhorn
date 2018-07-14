@@ -1,34 +1,35 @@
-require 'singleton'
 require 'yaml'
+require_relative 'mixins/conigurable'
+require_relative 'config/sms'
+require_relative 'config/push'
+require_relative 'config/email'
 
 module Bullhorn
   class Config
-    include Singleton
+    extend ::Bullhorn::Mixins::Configurable
 
     DEFAULT_REGISTERED_CHANNELS = %i[sms email push]
     DEFAULT_SPLITTER = '.'
 
     attr_reader :collection, :env_collection, :configured
     attr_writer :collection_file
-    attr_accessor :env_collection_file, :splitter, :registered_channels, :email_layout
-
-    class CollectionFileNotDefined < StandardError; end
-
-    class << self
-      def configure(&block)
-        # TODO: log warn instead nil
-        @configured ? nil : instance_eval(&block)
-        @configured = true
-      end
-
-      def config
-        @config ||= Bullhorn::Config.instance
-      end
-    end
+    attr_accessor :env_collection_file, :splitter, :registered_channels
 
     def initialize
       @registered_channels = DEFAULT_REGISTERED_CHANNELS
       @splitter = DEFAULT_SPLITTER
+      define_ch_config_methods
+    end
+
+    def define_ch_config_methods
+      registered_channels.each do |ch|
+        define_ch_config_method(ch)
+      end
+    end
+
+    def define_ch_config_method(ch)
+      method_proc = -> { self.class.const_get(ch.capitalize).config }
+      self.class.send(:define_method, ch, method_proc)
     end
 
     def collection_file
@@ -48,7 +49,10 @@ module Bullhorn
 
     def registrate_channel(ch)
       registered_channels << ch.to_sym
+      define_ch_config_method(ch)
     end
+
+    class CollectionFileNotDefined < StandardError; end
 
     private
 
