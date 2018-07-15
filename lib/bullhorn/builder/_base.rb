@@ -8,7 +8,6 @@ module Bullhorn
 
       attr_reader :data, :key, :options
 
-
       def initialize(data, key, **options)
         @data = data
         @key = key

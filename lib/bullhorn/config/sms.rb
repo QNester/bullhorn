@@ -6,7 +6,7 @@ module Bullhorn
     class Sms
       extend ::Bullhorn::Mixins::Configurable
 
-      attr_accessor :twilio_account_sid, :twilio_auth_token
+      attr_accessor :twilio_account_sid, :twilio_auth_token, :twilio_from_number
       attr_reader   :twilio_client
 
       def twilio_client

@@ -1,0 +1,5 @@
+class PushToken
+  def value
+    'e6AKLdtNaQk:APA91bFmzHTtEtepxEeFoIAwHmJDdnnj5PKnNtAENKRd357Ird-rYq89Xc4MJ-DCLdckp81CR2c9lKFKUxdTap45C-Wg0dYZMwKcVVi3fvKnjMLe3g5DYw7LeXVL80yvEx1JSUvyJbMxzks49KQ2R3o2I6SnNWvgUw'
+  end
+end

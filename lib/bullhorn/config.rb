@@ -11,13 +11,14 @@ module Bullhorn
     DEFAULT_REGISTERED_CHANNELS = %i[sms email push]
     DEFAULT_SPLITTER = '.'
 
-    attr_reader :collection, :env_collection, :configured
+    attr_reader :collection, :env_collection, :configured, :registered_receivers
     attr_writer :collection_file
     attr_accessor :env_collection_file, :splitter, :registered_channels
 
     def initialize
       @registered_channels = DEFAULT_REGISTERED_CHANNELS
       @splitter = DEFAULT_SPLITTER
+      @registered_receivers = []
       define_ch_config_methods
     end
 
@@ -50,6 +51,10 @@ module Bullhorn
     def registrate_channel(ch)
       registered_channels << ch.to_sym
       define_ch_config_method(ch)
+    end
+
+    def registrate_receiver(receiver_class)
+      @registered_receivers << receiver_class
     end
 
     class CollectionFileNotDefined < StandardError; end

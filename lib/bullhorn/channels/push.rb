@@ -14,8 +14,8 @@ module Bullhorn
             priority: builder.options[:priority] || config.push.priority,
             time_to_live: config.push.ttl
           }
-          response = config.push.fcm.send(ids(to), options)
-          p response
+          p("[PUSH] Send #{options} body for #{ids(to)}")
+          config.push.fcm.send(ids(to), options)
         end
 
         private
@@ -23,6 +23,10 @@ module Bullhorn
         def ids(to)
           return to if to.is_a?(Array)
           [to]
+        end
+
+        def required_credentials
+          [:fcm_token]
         end
       end
     end
