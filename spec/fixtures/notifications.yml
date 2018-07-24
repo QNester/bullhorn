@@ -9,3 +9,14 @@ events:
       subject: Hello subject
       body: Hello body
 
+rspec:
+  test_notification:
+    sms:
+      text: Test, %{pass_variable}
+    push:
+      title: Test, %{pass_variable}
+      body: Test, %{pass_variable}
+    email:
+      subject: Test, %{pass_variable}
+      body: Test, %{pass_variable}
+

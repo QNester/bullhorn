@@ -1,5 +1,5 @@
 require_relative 'push_token'
-require_relative '../../lib/bullhorn'
+require_relative '../../../lib/bullhorn'
 
 class User
   extend Bullhorn::Receiver

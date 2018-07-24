@@ -1,10 +1,10 @@
-require_relative '../mixins/conigurable'
+require_relative 'conigurable'
 require 'mail'
 
 module Bullhorn
   class Config
     class Email
-      extend ::Bullhorn::Mixins::Configurable
+      extend Configurable
 
       DEFAULT_DELIVERY_METHOD = :sendmail
 

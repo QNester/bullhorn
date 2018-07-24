@@ -1,6 +1,5 @@
 require_relative '_base'
 require 'mail'
-require 'byebug'
 
 module Bullhorn
   module Channels

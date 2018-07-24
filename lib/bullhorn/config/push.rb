@@ -1,10 +1,10 @@
-require_relative '../mixins/conigurable'
+require_relative 'conigurable'
 require 'fcm'
 
 module Bullhorn
   class Config
     class Push
-      extend ::Bullhorn::Mixins::Configurable
+      extend Configurable
 
       DEFAULT_PRIORITY = 'high'
       DEFAULT_TTL = 60

@@ -3,7 +3,7 @@ RSpec.describe Bullhorn do
     expect(Bullhorn::VERSION).not_to be nil
   end
 
-  it "does something useful" do
-    expect(false).to eq(true)
+  it "has a config" do
+    expect(Bullhorn::Config).not_to be nil
   end
 end

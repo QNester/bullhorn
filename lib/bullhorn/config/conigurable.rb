@@ -1,7 +1,7 @@
 require 'singleton'
 
 module Bullhorn
-  module Mixins
+  class Config
     module Configurable
 
       def self.extended klass

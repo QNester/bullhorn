@@ -1,10 +1,10 @@
-require_relative '../mixins/conigurable'
+require_relative 'conigurable'
 require 'twilio-ruby'
 
 module Bullhorn
   class Config
     class Sms
-      extend ::Bullhorn::Mixins::Configurable
+      extend Configurable
 
       attr_accessor :twilio_account_sid, :twilio_auth_token, :twilio_from_number
       attr_reader   :twilio_client
