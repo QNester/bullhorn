@@ -1,5 +1,5 @@
 # Bullhorn
-[![Build Status](https://travis-ci.org/QNester/bullhorn.svg?branch=master)](https://travis-ci.org/QNester/bullhorn)
+[![Build Status](https://travis-ci.org/QNester/bullhorn.svg?branch=master)](https://travis-ci.com/QNester/bullhorn)
 
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/bullhorn`. To experiment with that code, run `bin/console` for an interactive prompt.
 
