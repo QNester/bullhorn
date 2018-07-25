@@ -15,4 +15,11 @@ RSpec.configure do |config|
   # config.filter_run :focus
   config.order = :random
   Kernel.srand config.seed
+
+  config.before do
+    Bullhorn::Config.instance.instance_variable_set(:@configured, false)
+    Bullhorn::Config.instance_variable_set(:@configured, false)
+    Bullhorn::Config.instance.instance_variable_set(:@collection, nil)
+    Bullhorn::Config.instance.instance_variable_set(:@env_collection, nil)
+  end
 end

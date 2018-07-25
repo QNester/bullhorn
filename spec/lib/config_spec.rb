@@ -1,14 +1,11 @@
 require 'spec_helper'
 
 RSpec.describe Bullhorn::Config do
-  describe 'must be singleton' do
-    it 'have #instance method and return instance' do
-      expect(described_class.instance).to be_instance_of(Bullhorn::Config)
-    end
+  include_examples :singleton
 
-    it 'new is private method' do
-      expect { described_class.new }.to raise_error(NoMethodError)
-    end
+  describe 'attributes' do
+    include_examples :have_accessors, :collection_file, :env_collection_file, :splitter, :registered_channels
+    include_examples :have_readers, :collection, :env_collection, :configured, :registered_receivers
   end
 
   describe '#configure' do
@@ -64,18 +61,30 @@ RSpec.describe Bullhorn::Config do
     end
 
     describe 'registered_channels' do
-
-    end
-
-    describe 'push' do
-      describe 'fcm_token' do
-
+      before do |ex|
+        unless ex.metadata[:skip_before]
+          described_class.configure { config.registered_channels = [:push, :email] }
+        end
       end
-    end
 
-    describe 'email' do
-      describe 'from' do
+      it 'set registered channels' do
+        expect(described_class.instance.registered_channels).to eq([:push, :email])
+      end
 
+      it 'define methods for all channels' do
+        [:push, :email].each do |ch|
+          found_method = described_class.instance.public_methods.find { |method| method == ch }
+          expect(found_method).not_to eq(nil)
+        end
+      end
+
+      context 'default channels' do
+        it 'define method for all channels', :skip_before do
+          Bullhorn::Config::DEFAULT_REGISTERED_CHANNELS.each do |ch|
+            found_method = described_class.instance.public_methods.find { |method| method == ch }
+            expect(found_method).not_to eq(nil)
+          end
+        end
       end
     end
   end

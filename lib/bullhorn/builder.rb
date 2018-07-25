@@ -6,6 +6,10 @@ module Bullhorn
   class Builder
     attr_reader :data, :options
 
+    # Load data from collection yaml via key and interpolate variables.
+    # Define methods for each registered channel. After initialize you can use
+    #   `instance.<ch_name>`. It will be return instance of Bullhorn::Builder::<YOUR_CHANNEL_NAME>
+    #
     def initialize(key, **options)
       @data = fetch_from_collection_by_key(key)
       @options = options
