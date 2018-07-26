@@ -20,7 +20,7 @@ module Bullhorn
       end
 
       def send!(notification_key, to:, **options)
-        builder = Builder.new(notification_key)
+        builder = Builder.new(notification_key, options)
         response = {}
         config.registered_channels.each do |ch|
           if channel_allowed?(ch, to, builder, options)
@@ -30,12 +30,12 @@ module Bullhorn
         response
       end
 
+      private
+
       def channel_allowed?(ch, to, builder, **options)
         return false unless to[ch.to_sym] || to[ch.to_s]
         channel_allowed_by_only?(ch, options[:only]) && !builder.send(ch).nil?
       end
-
-      private
 
       def receiver_valid?(receiver)
         config.registered_receivers.include?(receiver.class)
@@ -50,8 +50,8 @@ module Bullhorn
       def config
         Config.config
       end
-
-      class NotRegisteredReceiver < StandardError; end
     end
+
+    class NotRegisteredReceiver < StandardError; end
   end
 end

@@ -1,17 +1,16 @@
 require_relative 'push_token'
-require_relative '../../../lib/bullhorn'
 
 class User
   extend Bullhorn::Receiver
-
-  receive(
-    sms: -> { number },
-    push: -> { push_token.value },
-    email: -> { email[:address] }
-  )
+  #
+  # receive(
+  #   sms: -> { number },
+  #   push: -> { push_token.value },
+  #   email: -> { email[:address] }
+  # )
 
   def number
-    SecureRandom.uuid
+    FFaker
   end
 
   def push_token

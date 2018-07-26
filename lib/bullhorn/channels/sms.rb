@@ -14,6 +14,8 @@ module Bullhorn
           )
         end
 
+        private
+
         def required_credentials
           [:twilio_from_number]
         end

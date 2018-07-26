@@ -22,6 +22,7 @@ GEM
     fcm (0.0.2)
       httparty
       json
+    ffaker (2.9.0)
     hashdiff (0.3.7)
     hkdf (0.3.0)
     httparty (0.16.2)
@@ -77,6 +78,7 @@ PLATFORMS
 DEPENDENCIES
   bullhorn!
   bundler
+  ffaker
   pry-byebug
   rake
   rspec
