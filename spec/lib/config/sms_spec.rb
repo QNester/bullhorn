@@ -2,7 +2,10 @@ require 'spec_helper'
 
 RSpec.describe Bullhorn::Config::Sms do
   before do
-    described_class.instance_variable_set(:@configured, false)
+    described_class.instance.instance_variable_set(:@configured, false)
+    described_class.instance.instance_variable_set(:@twilio_account_sid, nil)
+    described_class.instance.instance_variable_set(:@twilio_auth_token, nil)
+    described_class.instance.instance_variable_set(:@twilio_from_number, nil)
   end
 
   include_examples :singleton
@@ -29,15 +32,10 @@ RSpec.describe Bullhorn::Config::Sms do
       end
     end
 
-    # FIXME: переодически падает спека, разобраться и починить
-    # context 'not pass twilio credentials' do
-    #   it 'raise TwilioCredentialsNotExists' do
-    #     described_class.instance_variable_set(:@configured, false)
-    #     described_class.instance_variable_set(:@twilio_account_sid, nil)
-    #     described_class.instance_variable_set(:@twilio_auth_token, nil)
-    #     described_class.instance_variable_set(:@twilio_from_number, nil)
-    #     expect { subject }.to raise_error(Bullhorn::Config::Sms::TwilioCredentialsNotExists)
-    #   end
-    # end
+    context 'not pass twilio credentials' do
+      it 'raise TwilioCredentialsNotExists' do
+        expect { subject }.to raise_error(Bullhorn::Config::Sms::TwilioCredentialsNotExists)
+      end
+    end
   end
 end

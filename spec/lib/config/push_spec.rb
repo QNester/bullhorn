@@ -2,7 +2,8 @@ require 'spec_helper'
 
 RSpec.describe Bullhorn::Config::Push do
   before do
-    described_class.instance_variable_set(:@configured, false)
+    described_class.instance.instance_variable_set(:@configured, false)
+    described_class.instance.instance_variable_set(:@fcm_token, nil)
   end
 
   include_examples :singleton
@@ -22,13 +23,10 @@ RSpec.describe Bullhorn::Config::Push do
       end
     end
 
-    # FIXME: переодически падает спека, разобраться и починить
-    # context 'not pass fcm token' do
-    #   it 'raise FcmTokenNotExists' do
-    #     described_class.instance_variable_set(:@configured, false)
-    #     described_class.instance_variable_set(:@fcm_token, nil)
-    #     expect { subject }.to raise_error(Bullhorn::Config::Push::FcmTokenNotExists)
-    #   end
-    # end
+    context 'not pass fcm token' do
+      it 'raise FcmTokenNotExists' do
+        expect { subject }.to raise_error(Bullhorn::Config::Push::FcmTokenNotExists)
+      end
+    end
   end
 end
