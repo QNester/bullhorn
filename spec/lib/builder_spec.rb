@@ -4,6 +4,7 @@ RSpec.describe Bullhorn::Builder do
   TEST_FILE = 'spec/fixtures/notifications.yml'
 
   before do
+    Bullhorn::Config.instance.instance_variable_set(:@splitter, '.')
     Bullhorn::Config.configure do
       config.collection_file = TEST_FILE
     end
