@@ -6,6 +6,9 @@ module Bullhorn
 
     def self.extended klass
       klass.class_eval do
+        # Method will be injected for instances methods of class.
+        #
+        # This can use something like: user.send_notification('key', options).
         def send_notification(notification_key, **options)
           Sender.send_to(self, notification_key, options)
         end
@@ -52,7 +55,7 @@ module Bullhorn
     def check_channels(channels)
       channels.all? do |ch|
         next if bullhorn_config.registered_channels.include?(ch.to_sym)
-        raise NotRegisteredChannel, "Channel #{ch} not registered."
+        raise NotRegisteredChannel, "Channel #{ch} not registered. Registered channels: #{bullhorn_config.registered_channels}"
       end
       @received_channels = channels
     end

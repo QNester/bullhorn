@@ -1,9 +1,12 @@
 require "bundler/setup"
+require 'ffaker'
 require 'webmock'
 require "bullhorn"
 require 'pry-byebug'
 
 Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f }
+
+TEST_FILE = 'spec/fixtures/notifications.yml'
 
 RSpec.configure do |config|
   config.example_status_persistence_file_path = ".rspec_status"
