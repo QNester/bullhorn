@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-RSpec.describe Bullhorn::Builder do
+RSpec.describe Horn::Builder do
   before do
-    Bullhorn::Config.instance.instance_variable_set(:@splitter, '.')
-    Bullhorn::Config.configure do
+    Horn::Config.instance.instance_variable_set(:@splitter, '.')
+    Horn::Config.configure do
       config.collection_file = TEST_FILE
     end
   end
@@ -17,7 +17,7 @@ RSpec.describe Bullhorn::Builder do
       let!(:options) { { pass_variable: pass_variable } }
 
       it 'define channels methods' do
-        Bullhorn::Config.instance.registered_channels.each do |ch|
+        Horn::Config.instance.registered_channels.each do |ch|
           expected_class = described_class.const_get(ch.downcase.capitalize)
           expect(subject.send(ch)).to be_instance_of(expected_class)
         end

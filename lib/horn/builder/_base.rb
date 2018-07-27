@@ -1,4 +1,4 @@
-module Bullhorn
+module Horn
   class Builder
     class Base
       INTERPOLATION_PATTERN = Regexp.union(

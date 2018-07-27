@@ -1,16 +1,23 @@
-# Bullhorn
-[![Build Status](https://travis-ci.com/QNester/bullhorn.svg?branch=master)](https://travis-ci.com/QNester/bullhorn)
+# Horn
+[![Build Status](https://travis-ci.com/QNester/horn.svg?branch=master)](https://travis-ci.com/QNester/horn)
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/bullhorn`. To experiment with that code, run `bin/console` for an interactive prompt.
+Send multichannel notifications with one command. 
+Сonvenient storage of notifications texts. Create your 
+own channels. Registrate receiver and send notifications for 
+him easy.
 
-TODO: Delete this and the text above, and describe your gem
+## Requirements
+ * Ruby 2.2.1+ (rspec works with ruby 2.2.1, 2.3.0, 2.4.0, 
+ 2.5.1)
+ * FCM - Gem send push notification using [fcm gem](https://github.com/spacialdb/fcm).
+ You need *fcm server key* to successful configure push notifications.
+ * Twilio - Gem send sms notification using [twilio-ruby gem](twilio-ruby).
+    You need *twilio account sid* and *twilio auth token* to successful configure sms notifications.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
 ```ruby
-gem 'bullhorn'
+gem 'horn'
 ```
 
 And then execute:
@@ -19,11 +26,20 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install bullhorn
+    $ gem install horn    
 
-## Usage
+## How to use
 
-TODO: Write usage instructions here
+### Configure
+First, you must configure Horn.
+### Registrate receiver
+About receiver
+### Build your notification
+About builder
+### Send notification
+About sender
+### Create your own channels
+How to create custom channel
 
 ## Development
 
@@ -33,8 +49,8 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/bullhorn. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/horn. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## Code of Conduct
 
-Everyone interacting in the Bullhorn project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/bullhorn/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Horn project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/horn/blob/master/CODE_OF_CONDUCT.md).

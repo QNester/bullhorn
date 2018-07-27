@@ -1,7 +1,7 @@
 require "bundler/setup"
 require 'ffaker'
 require 'webmock'
-require "bullhorn"
+require "horn"
 
 Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f }
 
@@ -19,9 +19,9 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 
   config.before do
-    Bullhorn::Config.instance.instance_variable_set(:@configured, false)
-    Bullhorn::Config.instance_variable_set(:@configured, false)
-    Bullhorn::Config.instance.instance_variable_set(:@collection, nil)
-    Bullhorn::Config.instance.instance_variable_set(:@env_collection, nil)
+    Horn::Config.instance.instance_variable_set(:@configured, false)
+    Horn::Config.instance_variable_set(:@configured, false)
+    Horn::Config.instance.instance_variable_set(:@collection, nil)
+    Horn::Config.instance.instance_variable_set(:@env_collection, nil)
   end
 end

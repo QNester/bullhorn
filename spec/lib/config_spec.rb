@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Bullhorn::Config do
+RSpec.describe Horn::Config do
   include_examples :singleton
 
   describe 'attributes' do
@@ -17,7 +17,7 @@ RSpec.describe Bullhorn::Config do
       SPLITTER_VALUE = '--'
 
       before do
-        Bullhorn::Config.configure { config.splitter = SPLITTER_VALUE }
+        Horn::Config.configure { config.splitter = SPLITTER_VALUE }
       end
 
       it 'returns splitter value' do
@@ -80,7 +80,7 @@ RSpec.describe Bullhorn::Config do
 
       context 'default channels' do
         it 'define method for all channels', :skip_before do
-          Bullhorn::Config::DEFAULT_REGISTERED_CHANNELS.each do |ch|
+          Horn::Config::DEFAULT_REGISTERED_CHANNELS.each do |ch|
             found_method = described_class.instance.public_methods.find { |method| method == ch }
             expect(found_method).not_to eq(nil)
           end

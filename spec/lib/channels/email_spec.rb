@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Bullhorn::Channels::Email do
+RSpec.describe Horn::Channels::Email do
   describe 'send!' do
     context 'all credentials presents' do
       pending 'call mail'

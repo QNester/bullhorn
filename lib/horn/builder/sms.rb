@@ -1,6 +1,6 @@
 require_relative '_base'
 
-module Bullhorn
+module Horn
   class Builder
     class Sms < Base
       attr_reader :text
