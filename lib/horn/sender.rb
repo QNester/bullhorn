@@ -4,7 +4,7 @@ require_relative 'channels/push'
 require_relative 'channels/sms'
 require_relative 'channels/email'
 
-module Bullhorn
+module Horn
   class Sender
     class << self
       def send_to(receiver, notification_key, **options)

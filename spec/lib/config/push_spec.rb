@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Bullhorn::Config::Push do
+RSpec.describe Horn::Config::Push do
   before do
     described_class.instance.instance_variable_set(:@configured, false)
     described_class.instance.instance_variable_set(:@fcm_token, nil)
@@ -25,7 +25,7 @@ RSpec.describe Bullhorn::Config::Push do
 
     context 'not pass fcm token' do
       it 'raise FcmTokenNotExists' do
-        expect { subject }.to raise_error(Bullhorn::Config::Push::FcmTokenNotExists)
+        expect { subject }.to raise_error(Horn::Config::Push::FcmTokenNotExists)
       end
     end
   end

@@ -1,7 +1,7 @@
 require_relative 'conigurable'
 require 'twilio-ruby'
 
-module Bullhorn
+module Horn
   class Config
     class Sms
       extend Configurable

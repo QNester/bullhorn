@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Bullhorn::Channels::Sms do
+RSpec.describe Horn::Channels::Sms do
   describe 'send!' do
     context 'all credentials presents' do
       pending 'send message to twilio'

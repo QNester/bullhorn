@@ -1,6 +1,6 @@
 require_relative 'sender'
 
-module Bullhorn
+module Horn
   module Receiver
     attr_reader :receiver_channels, :receiver_data
 
@@ -25,7 +25,7 @@ module Bullhorn
     # Example:
     #
     # class User
-    #   extend Bullhorn::Receiver
+    #   extend Horn::Receiver
     #
     #   receive(
     #     sms:   -> { number },
@@ -45,7 +45,7 @@ module Bullhorn
 
       @receiver_data = receiver_data
       @receiver_channels = receiver_data.keys
-      bullhorn_config.registrate_receiver(self)
+      horn_config.registrate_receiver(self)
 
       define_receive_info_methods
     end
@@ -54,8 +54,8 @@ module Bullhorn
 
     def check_channels(channels)
       channels.all? do |ch|
-        next if bullhorn_config.registered_channels.include?(ch.to_sym)
-        raise NotRegisteredChannel, "Channel #{ch} not registered. Registered channels: #{bullhorn_config.registered_channels}"
+        next if horn_config.registered_channels.include?(ch.to_sym)
+        raise NotRegisteredChannel, "Channel #{ch} not registered. Registered channels: #{horn_config.registered_channels}"
       end
       @received_channels = channels
     end
@@ -66,7 +66,7 @@ module Bullhorn
       end
     end
 
-    def bullhorn_config
+    def horn_config
       Config.config
     end
 

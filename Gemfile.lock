@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullhorn (0.1.0)
+    horn (0.1.0)
       fcm
       mail
       twilio-ruby
@@ -67,9 +67,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bullhorn!
   bundler
   ffaker
+  horn!
   rake
   rspec
   webmock
