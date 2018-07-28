@@ -1,15 +1,15 @@
 require 'spec_helper'
 require 'dummy/user'
 
-RSpec.describe Bullhorn::Sender do
+RSpec.describe Horn::Sender do
   let!(:channels) { [:sms, :push, :email] }
   let!(:key) { 'rspec.test_notification' }
   let!(:options) { { pass_variable: FFaker::Lorem.word } }
 
   before do
-    Bullhorn::Config.instance.instance_variable_set(:@registered_channels, channels)
-    Bullhorn::Config.instance.instance_variable_set(:@splitter, '.')
-    Bullhorn::Config.configure do
+    Horn::Config.instance.instance_variable_set(:@registered_channels, channels)
+    Horn::Config.instance.instance_variable_set(:@splitter, '.')
+    Horn::Config.configure do
       config.collection_file = TEST_FILE
     end
   end
@@ -28,7 +28,7 @@ RSpec.describe Bullhorn::Sender do
       let!(:receiver) { push_token }
 
       it 'raise error NotRegisteredReceiver' do
-        expect { subject }.to raise_error(Bullhorn::Sender::NotRegisteredReceiver)
+        expect { subject }.to raise_error(Horn::Sender::NotRegisteredReceiver)
       end
     end
 
@@ -59,8 +59,8 @@ RSpec.describe Bullhorn::Sender do
 
     it 'call channel\'s #send! for each allowed registered channel' do
       channels.each do |ch|
-        expect(Bullhorn::Channels.const_get(ch.to_s.capitalize)).to(
-          receive(:send!).with(instance_of(Bullhorn::Builder), to: to[ch])
+        expect(Horn::Channels.const_get(ch.to_s.capitalize)).to(
+          receive(:send!).with(instance_of(Horn::Builder), to: to[ch])
         )
       end
 
@@ -72,12 +72,12 @@ RSpec.describe Bullhorn::Sender do
       let!(:excluded_channels) { channels - [options[:only]] }
 
       it 'send for channel from only and not send for channel not from only' do
-        expect(Bullhorn::Channels.const_get(options[:only].to_s.capitalize)).to(
-          receive(:send!).with(instance_of(Bullhorn::Builder), to: to[options[:only]])
+        expect(Horn::Channels.const_get(options[:only].to_s.capitalize)).to(
+          receive(:send!).with(instance_of(Horn::Builder), to: to[options[:only]])
         )
 
         excluded_channels.each do |ch|
-          expect(Bullhorn::Channels.const_get(ch.to_s.capitalize)).not_to receive(:send!)
+          expect(Horn::Channels.const_get(ch.to_s.capitalize)).not_to receive(:send!)
         end
         subject
       end

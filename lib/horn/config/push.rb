@@ -1,7 +1,7 @@
 require_relative 'conigurable'
 require 'fcm'
 
-module Bullhorn
+module Horn
   class Config
     class Push
       extend Configurable

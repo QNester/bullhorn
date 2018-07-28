@@ -1,4 +1,4 @@
-module Bullhorn
+module Horn
   module Channels
     class Base
       class << self

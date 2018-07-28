@@ -1,7 +1,7 @@
 require_relative 'push_token'
 
 class User
-  extend Bullhorn::Receiver
+  extend Horn::Receiver
   #
   # receive(
   #   sms: -> { number },

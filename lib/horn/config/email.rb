@@ -1,7 +1,7 @@
 require_relative 'conigurable'
 require 'mail'
 
-module Bullhorn
+module Horn
   class Config
     class Email
       extend Configurable

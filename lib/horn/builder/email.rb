@@ -1,6 +1,6 @@
 require_relative '_base'
 
-module Bullhorn
+module Horn
   class Builder
     class Email < Base
       attr_reader :subject, :body, :layout

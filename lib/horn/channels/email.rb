@@ -1,7 +1,7 @@
 require_relative '_base'
 require 'mail'
 
-module Bullhorn
+module Horn
   module Channels
     class Email < Base
       class << self

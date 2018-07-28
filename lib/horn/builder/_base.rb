@@ -1,4 +1,4 @@
-module Bullhorn
+module Horn
   class Builder
     class Base
       INTERPOLATION_PATTERN = Regexp.union(
@@ -22,11 +22,15 @@ module Bullhorn
       end
 
       def ch_data
-        data.fetch(self.class.name.split('::').last.downcase)
+        data.fetch(current_builder_name)
       end
 
       def ch_options
-        data.fetch('email', {})
+        options.fetch(current_builder_name, {})
+      end
+
+      def current_builder_name
+        self.class.name.split('::').last.downcase
       end
     end
   end

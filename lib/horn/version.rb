@@ -1,3 +1,3 @@
-module Bullhorn
+module Horn
   VERSION = "0.1.0"
 end
