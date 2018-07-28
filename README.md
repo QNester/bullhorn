@@ -1,10 +1,23 @@
-# Horn
-[![Build Status](https://travis-ci.com/QNester/bullhorn.svg?branch=master)](https://travis-ci.com/QNester/bullhorn)
+# Horn [Alpha]
+[![Build Status](https://travis-ci.com/QNester/horn.svg?branch=master)](https://travis-ci.com/QNester/horn)
+
+__Gem was not loaded to rubygem server yet.__
 
 Send multichannel notifications with one command. 
 Сonvenient storage of notifications texts. Create your 
 own channels. Registrate receiver and send notifications for 
 him easy.
+
+* [Requirements](#requirements)
+* [Installation](#installation)
+* [How to use](#how-to-use)
+    * [Configure](#configure)
+    * [Registrate receiver](#registrate-receiver)
+    * [Build your notification](#build-your-notification)
+    * [Send notification](#send-notification)
+    * [Sender options](#sender-options)
+    * [Create your own channels](#create-your-own-channels)    
+
 
 ## Requirements
  * Ruby 2.2.1+ (rspec works with ruby 2.2.1, 2.3.0, 2.4.0, 
