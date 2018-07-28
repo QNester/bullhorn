@@ -14,7 +14,7 @@ require_relative 'config/email'
 # @config OPTIONAL registered_channels - Channels available for service. If your application
 #   planning use only push and email just set it as [:push, :email]. Default all channels
 #   will available.
-module Bullhorn
+module Horn
   class Config
     extend Configurable
 
@@ -35,7 +35,7 @@ module Bullhorn
     def collection_file
       @collection_file || raise(
         CollectionFileNotDefined,
-        'You must define Bullhorn::Config.collection_file'
+        'You must define Horn::Config.collection_file'
       )
     end
 
@@ -53,9 +53,9 @@ module Bullhorn
 
     # Registrate new custom channel.
     # For successful registration, in application must be exists:
-    # 1. Bullhorn::Channels::<YOUR_CHANNEL_NAME> < Bullhorn::Channels::Base
-    # 2. Bullhorn::Builder::<YOUR_CHANNEL_NAME> < Bullhorn::Builder::Base
-    # 3. Bullhorn::Config::<YOUR_CHANNEL_NAME> extended Bullhorn::Config::Configurable
+    # 1. Horn::Channels::<YOUR_CHANNEL_NAME> < Horn::Channels::Base
+    # 2. Horn::Builder::<YOUR_CHANNEL_NAME> < Horn::Builder::Base
+    # 3. Horn::Config::<YOUR_CHANNEL_NAME> extended Horn::Config::Configurable
     #
     def registrate_channel(ch)
       registered_channels << ch.to_sym

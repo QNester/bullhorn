@@ -4,9 +4,16 @@ require_relative 'channels/push'
 require_relative 'channels/sms'
 require_relative 'channels/email'
 
-module Bullhorn
+module Horn
   class Sender
     class << self
+      # Send notifications for receiver
+      #
+      # @input receiver [Instance of receiver class] - registrated receiver
+      # @input notification_key [String] - key for notification builder
+      # @input options [Hash]
+      #   @option only [String/Array[String]] - whitelist for using channels
+      #
       def send_to(receiver, notification_key, **options)
         unless receiver_valid?(receiver)
           raise NotRegisteredReceiver, "Class '#{receiver.class}' not registered as receiver"

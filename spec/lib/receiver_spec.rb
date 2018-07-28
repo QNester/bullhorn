@@ -3,11 +3,11 @@ require 'dummy/user'
 
 RSpec.describe User do
   before do
-    Bullhorn::Config.configure do
+    Horn::Config.configure do
       config.collection_file = TEST_FILE
     end
 
-    Bullhorn::Config.instance.instance_variable_set(:@registered_channels, [:sms, :push, :email])
+    Horn::Config.instance.instance_variable_set(:@registered_channels, [:sms, :push, :email])
   end
 
   describe 'class method #receive' do
@@ -17,7 +17,7 @@ RSpec.describe User do
       let!(:receiver_options) { { unknown_channel:  -> { 'hello' } } }
 
       it 'raise NotRegisteredChannel' do
-        expect { subject }.to raise_error(Bullhorn::Receiver::NotRegisteredChannel)
+        expect { subject }.to raise_error(Horn::Receiver::NotRegisteredChannel)
       end
     end
 
@@ -27,7 +27,7 @@ RSpec.describe User do
 
       it 'registrate receiver in config' do
         subject
-        expect(Bullhorn::Config.instance.registered_receivers).to include(described_class)
+        expect(Horn::Config.instance.registered_receivers).to include(described_class)
       end
 
       it 'define receive methods' do
@@ -46,7 +46,7 @@ RSpec.describe User do
     subject { user.send_notification(key, {}) }
 
     it 'call Sender send_to' do
-      expect(Bullhorn::Sender).to receive(:send_to).with(user, key, {})
+      expect(Horn::Sender).to receive(:send_to).with(user, key, {})
       subject
     end
   end

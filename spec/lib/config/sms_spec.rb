@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Bullhorn::Config::Sms do
+RSpec.describe Horn::Config::Sms do
   before do
     described_class.instance.instance_variable_set(:@configured, false)
     described_class.instance.instance_variable_set(:@twilio_account_sid, nil)
@@ -34,7 +34,7 @@ RSpec.describe Bullhorn::Config::Sms do
 
     context 'not pass twilio credentials' do
       it 'raise TwilioCredentialsNotExists' do
-        expect { subject }.to raise_error(Bullhorn::Config::Sms::TwilioCredentialsNotExists)
+        expect { subject }.to raise_error(Horn::Config::Sms::TwilioCredentialsNotExists)
       end
     end
   end

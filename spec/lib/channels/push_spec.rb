@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Bullhorn::Channels::Push do
+RSpec.describe Horn::Channels::Push do
   describe 'send!' do
     context 'all credentials presents' do
       pending 'send msg via fcm'

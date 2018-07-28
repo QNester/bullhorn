@@ -1,6 +1,6 @@
 require_relative '_base'
 
-module Bullhorn
+module Horn
   class Builder
     class Push < Base
       attr_reader :body, :title, :data

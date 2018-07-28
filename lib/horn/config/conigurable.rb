@@ -1,6 +1,6 @@
 require 'singleton'
 
-module Bullhorn
+module Horn
   class Config
     module Configurable
 

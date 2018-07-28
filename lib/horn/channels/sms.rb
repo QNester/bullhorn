@@ -1,6 +1,6 @@
 require_relative '_base'
 
-module Bullhorn
+module Horn
   module Channels
     class Sms < Base
       class << self

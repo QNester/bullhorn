@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Bullhorn::Config::Email do
+RSpec.describe Horn::Config::Email do
   include_examples :singleton
 
   describe 'attributes' do
