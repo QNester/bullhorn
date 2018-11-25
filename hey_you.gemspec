@@ -22,13 +22,11 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency "fcm"
-  spec.add_runtime_dependency "mail"
-  spec.add_runtime_dependency "webpush"
+  spec.add_runtime_dependency "fcm", '~> 0.0.2'
+  spec.add_runtime_dependency "mail", '~> 2.7'
 
-  spec.add_development_dependency "bundler"
-  spec.add_development_dependency "rake"
-  spec.add_development_dependency "rspec"
-  spec.add_development_dependency "webmock"
-  spec.add_development_dependency "ffaker"
+  spec.add_development_dependency "rake", '~> 10.5'
+  spec.add_development_dependency "rspec", '~> 3.7'
+  spec.add_development_dependency "webmock", '~> 3.4'
+  spec.add_development_dependency "ffaker", '~> 2.9'
 end
