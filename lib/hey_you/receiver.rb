@@ -1,6 +1,6 @@
 require_relative 'sender'
 
-module Horn
+module HeyYou
   module Receiver
     attr_reader :receiver_channels, :receiver_data
 
@@ -25,10 +25,9 @@ module Horn
     # Example:
     #
     # class User
-    #   extend Horn::Receiver
+    #   extend HeyYou::Receiver
     #
     #   receive(
-    #     sms:   -> { number },
     #     push:  -> { push_tokens.value },
     #     email: -> { priority_email }
     #   )
@@ -36,8 +35,7 @@ module Horn
     #   ...
     # end
     #
-    # user = User.new(number: 123, push_tokens: PushToken.new(value: "456"), priority_email: 'example@mail.com')
-    # user.sms_ch_receive_info # => 123
+    # user = User.new( push_tokens: PushToken.new(value: "456"), priority_email: 'example@mail.com')
     # user.push_ch_receive_info # => 456
     #
     def receive(receiver_data)
@@ -45,7 +43,7 @@ module Horn
 
       @receiver_data = receiver_data
       @receiver_channels = receiver_data.keys
-      horn_config.registrate_receiver(self)
+      hey_you_config.registrate_receiver(self)
 
       define_receive_info_methods
     end
@@ -54,8 +52,8 @@ module Horn
 
     def check_channels(channels)
       channels.all? do |ch|
-        next if horn_config.registered_channels.include?(ch.to_sym)
-        raise NotRegisteredChannel, "Channel #{ch} not registered. Registered channels: #{horn_config.registered_channels}"
+        next if hey_you_config.registered_channels.include?(ch.to_sym)
+        raise NotRegisteredChannel, "Channel #{ch} not registered. Registered channels: #{hey_you_config.registered_channels}"
       end
       @received_channels = channels
     end
@@ -66,7 +64,7 @@ module Horn
       end
     end
 
-    def horn_config
+    def hey_you_config
       Config.config
     end
 

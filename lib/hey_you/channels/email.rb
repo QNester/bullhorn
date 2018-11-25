@@ -1,21 +1,22 @@
 require_relative '_base'
 require 'mail'
 
-module Horn
+module HeyYou
   module Channels
     class Email < Base
       class << self
         def send!(builder, to:)
-          return unless credentials_present?
+          raise CredentialsNotExists unless credentials_present?
 
+          context = self
           mail = Mail.new do
-            from Config.config.email.from
+            from HeyYou::Config.instance.email.from
             to to
             subject builder.email.subject
-            body { get_body(builder.email.body) }
+            body context.get_body(builder.email.body)
           end
 
-          mail.delivery_method Config.config.email.delivery_method
+          mail.delivery_method config.email.delivery_method
           p("[EMAIL] Send mail #{mail}")
           mail.deliver
         end
@@ -26,9 +27,12 @@ module Horn
         end
 
         def required_credentials
-          [:delivery_method, :from]
+          %i[delivery_method from]
         end
+
       end
+
+      class CredentialsNotExists < StandardError; end
     end
   end
 end
