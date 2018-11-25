@@ -1,7 +1,8 @@
-require "bundler/setup"
+require 'bundler/setup'
 require 'ffaker'
 require 'webmock'
-require "hey_you"
+require 'hey_you'
+require 'byebug'
 
 Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f }
 
@@ -23,5 +24,6 @@ RSpec.configure do |config|
     HeyYou::Config.instance_variable_set(:@configured, false)
     HeyYou::Config.instance.instance_variable_set(:@collection, nil)
     HeyYou::Config.instance.instance_variable_set(:@env_collection, nil)
+    HeyYou::Config.instance.instance_variable_set(:@collection_file, TEST_FILE)
   end
 end

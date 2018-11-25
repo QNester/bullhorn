@@ -1,5 +1,6 @@
 require_relative 'builder/email'
 require_relative 'builder/push'
+require 'byebug'
 
 module HeyYou
   class Builder

@@ -18,7 +18,7 @@ module HeyYou
         @fcm_timeout = DEFAULT_FCM_TIMEOUT
       end
 
-      def fcm
+      def fcm_client
         raise FcmTokenNotExists, 'Can\'t create fcm client: fcm_token not exists' unless fcm_token
         @fcm_client ||= FCM.new(fcm_token, timeout: fcm_timeout)
       end

@@ -12,8 +12,8 @@ RSpec.describe HeyYou::Config::Push do
     include_examples :have_accessors, :fcm_token, :priority, :ttl, :fcm_timeout
   end
 
-  describe '#fcm' do
-    subject { described_class.instance.fcm }
+  describe '#fcm_client' do
+    subject { described_class.instance.fcm_client }
 
     context 'pass fcm token' do
       before { described_class.configure { config.fcm_token = SecureRandom.uuid } }
