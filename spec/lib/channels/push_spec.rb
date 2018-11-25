@@ -1,6 +1,12 @@
 require 'spec_helper'
 
 RSpec.describe HeyYou::Channels::Push do
+  before do
+    HeyYou::Config.configure do
+      config.collection_file = TEST_FILE
+    end
+  end
+
   let!(:user_token) { SecureRandom.uuid }
   let!(:builder) { HeyYou::Builder.new('rspec.test_notification', pass_variable: FFaker::Lorem.word) }
 
@@ -9,7 +15,7 @@ RSpec.describe HeyYou::Channels::Push do
 
     context 'all credentials presents' do
       before do
-        HeyYou::Config.configure { config.push.fcm_token = SecureRandom.uuid }
+        HeyYou::Config.instance.push.fcm_token = SecureRandom.uuid
       end
 
       it 'send msg via fcm' do
@@ -30,7 +36,7 @@ RSpec.describe HeyYou::Channels::Push do
 
     context 'not all credentials presents' do
       before do
-        HeyYou::Config.configure { config.push.fcm_token = nil }
+        HeyYou::Config.instance.push.fcm_token = nil
       end
 
       it 'raise error' do

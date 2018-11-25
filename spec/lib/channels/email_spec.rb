@@ -1,6 +1,13 @@
 require 'spec_helper'
 
 RSpec.describe HeyYou::Channels::Email do
+  before do
+    HeyYou::Config.instance.instance_variable_set(:@splitter, '.')
+    HeyYou::Config.configure do
+      config.collection_file = TEST_FILE
+    end
+  end
+
   describe 'send!' do
     let!(:from) { FFaker::Internet.email }
     let!(:user_email) { FFaker::Internet.email }
@@ -26,7 +33,7 @@ RSpec.describe HeyYou::Channels::Email do
 
     context 'not all credentials presents' do
       before do
-        HeyYou::Config.configure { config.email.from = nil }
+        HeyYou::Config.instance.email.from = nil
       end
 
       it 'raise error' do
