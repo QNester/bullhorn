@@ -1,7 +1,5 @@
 events:
   signed_up:
-    sms:
-      text: Hello!
     push:
       title: Hello title
       body: Hello body!
@@ -11,8 +9,6 @@ events:
 
 rspec:
   test_notification:
-    sms:
-      text: Test, %{pass_variable}
     push:
       title: Test, %{pass_variable}
       body: Test, %{pass_variable}

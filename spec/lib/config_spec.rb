@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Horn::Config do
+RSpec.describe HeyYou::Config do
   include_examples :singleton
 
   describe 'attributes' do
@@ -17,7 +17,7 @@ RSpec.describe Horn::Config do
       SPLITTER_VALUE = '--'
 
       before do
-        Horn::Config.configure { config.splitter = SPLITTER_VALUE }
+        HeyYou::Config.configure { config.splitter = SPLITTER_VALUE }
       end
 
       it 'returns splitter value' do
@@ -80,7 +80,7 @@ RSpec.describe Horn::Config do
 
       context 'default channels' do
         it 'define method for all channels', :skip_before do
-          Horn::Config::DEFAULT_REGISTERED_CHANNELS.each do |ch|
+          HeyYou::Config::DEFAULT_REGISTERED_CHANNELS.each do |ch|
             found_method = described_class.instance.public_methods.find { |method| method == ch }
             expect(found_method).not_to eq(nil)
           end

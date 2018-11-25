@@ -1,7 +1,7 @@
 require_relative 'conigurable'
 require 'fcm'
 
-module Horn
+module HeyYou
   class Config
     class Push
       extend Configurable
@@ -18,7 +18,7 @@ module Horn
         @fcm_timeout = DEFAULT_FCM_TIMEOUT
       end
 
-      def fcm
+      def fcm_client
         raise FcmTokenNotExists, 'Can\'t create fcm client: fcm_token not exists' unless fcm_token
         @fcm_client ||= FCM.new(fcm_token, timeout: fcm_timeout)
       end

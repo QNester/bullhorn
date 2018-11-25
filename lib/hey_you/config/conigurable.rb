@@ -1,6 +1,6 @@
 require 'singleton'
 
-module Horn
+module HeyYou
   class Config
     module Configurable
 
@@ -11,7 +11,7 @@ module Horn
       end
 
       def configure(&block)
-        # TODO: log warn instead nil
+        # TODO: log warn "Already configured" instead nil
         @configured ? nil : instance_eval(&block)
         @configured = true
       end

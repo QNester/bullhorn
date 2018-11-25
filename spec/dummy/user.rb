@@ -1,10 +1,9 @@
 require_relative 'push_token'
 
 class User
-  extend Horn::Receiver
+  extend HeyYou::Receiver
   #
   # receive(
-  #   sms: -> { number },
   #   push: -> { push_token.value },
   #   email: -> { email[:address] }
   # )

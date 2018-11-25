@@ -1,6 +1,5 @@
 require 'yaml'
 require_relative 'config/conigurable'
-require_relative 'config/sms'
 require_relative 'config/push'
 require_relative 'config/email'
 
@@ -14,11 +13,11 @@ require_relative 'config/email'
 # @config OPTIONAL registered_channels - Channels available for service. If your application
 #   planning use only push and email just set it as [:push, :email]. Default all channels
 #   will available.
-module Horn
+module HeyYou
   class Config
     extend Configurable
 
-    DEFAULT_REGISTERED_CHANNELS = %i[sms email push]
+    DEFAULT_REGISTERED_CHANNELS = %i[email push]
     DEFAULT_SPLITTER = '.'
     class CollectionFileNotDefined < StandardError; end
 
@@ -35,7 +34,7 @@ module Horn
     def collection_file
       @collection_file || raise(
         CollectionFileNotDefined,
-        'You must define Horn::Config.collection_file'
+        'You must define HeyYou::Config.collection_file'
       )
     end
 
@@ -53,9 +52,9 @@ module Horn
 
     # Registrate new custom channel.
     # For successful registration, in application must be exists:
-    # 1. Horn::Channels::<YOUR_CHANNEL_NAME> < Horn::Channels::Base
-    # 2. Horn::Builder::<YOUR_CHANNEL_NAME> < Horn::Builder::Base
-    # 3. Horn::Config::<YOUR_CHANNEL_NAME> extended Horn::Config::Configurable
+    # 1. HeyYou::Channels::<YOUR_CHANNEL_NAME> < HeyYou::Channels::Base
+    # 2. HeyYou::Builder::<YOUR_CHANNEL_NAME> < HeyYou::Builder::Base
+    # 3. HeyYou::Config::<YOUR_CHANNEL_NAME> extended HeyYou::Config::Configurable
     #
     def registrate_channel(ch)
       registered_channels << ch.to_sym
@@ -72,7 +71,7 @@ module Horn
 
     # Define method for fetch config of channel.
     #
-    # For example, if ch == 'sms' will define method #sms for class instance.
+    # For example, if ch == 'push' will define method #push for class instance.
     # New method will return instance of channel config instance
     def define_ch_config_method(ch)
       method_proc = -> { self.class.const_get(ch.capitalize).config }

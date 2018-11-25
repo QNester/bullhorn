@@ -1,6 +1,6 @@
 require_relative '_base'
 
-module Horn
+module HeyYou
   class Builder
     class Email < Base
       attr_reader :subject, :body, :layout

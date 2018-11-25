@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-RSpec.describe Horn::Builder do
+RSpec.describe HeyYou::Builder do
   before do
-    Horn::Config.instance.instance_variable_set(:@splitter, '.')
-    Horn::Config.configure do
+    HeyYou::Config.instance.instance_variable_set(:@splitter, '.')
+    HeyYou::Config.configure do
       config.collection_file = TEST_FILE
     end
   end
@@ -17,7 +17,7 @@ RSpec.describe Horn::Builder do
       let!(:options) { { pass_variable: pass_variable } }
 
       it 'define channels methods' do
-        Horn::Config.instance.registered_channels.each do |ch|
+        HeyYou::Config.instance.registered_channels.each do |ch|
           expected_class = described_class.const_get(ch.downcase.capitalize)
           expect(subject.send(ch)).to be_instance_of(expected_class)
         end
