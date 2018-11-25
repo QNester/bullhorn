@@ -1,5 +1,5 @@
 # HeyYou [Alpha]
-[![Build Status](https://travis-ci.com/QNester/hey-you#)](https://travis-ci.com/QNester/hey_you)
+[![Build Status](https://travis-ci.com/QNester/hey-you.svg?branch=master)](https://travis-ci.com/QNester/hey-you#)
 
 __Gem was not loaded to rubygem server yet.__
 
@@ -21,7 +21,7 @@ him easy.
 
 ## Requirements
  * Ruby 2.2.1+ (rspec works with ruby 2.2.1, 2.3.0, 2.4.0, 
- 2.5.1)
+ 2.5.3)
  * FCM - Gem send push notification using [fcm gem](https://github.com/spacialdb/fcm).
  You need *fcm server key* to successful configure push notifications.
 
