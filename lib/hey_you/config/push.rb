@@ -1,7 +1,7 @@
 require_relative 'conigurable'
 require 'fcm'
 
-module Horn
+module HeyYou
   class Config
     class Push
       extend Configurable

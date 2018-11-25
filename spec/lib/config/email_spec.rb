@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Horn::Config::Email do
+RSpec.describe HeyYou::Config::Email do
   include_examples :singleton
 
   describe 'attributes' do

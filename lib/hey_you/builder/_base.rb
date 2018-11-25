@@ -1,4 +1,4 @@
-module Horn
+module HeyYou
   class Builder
     class Base
       INTERPOLATION_PATTERN = Regexp.union(

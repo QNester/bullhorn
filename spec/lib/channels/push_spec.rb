@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Horn::Channels::Push do
+RSpec.describe HeyYou::Channels::Push do
   describe 'send!' do
     context 'all credentials presents' do
       pending 'send msg via fcm'

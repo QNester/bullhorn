@@ -1,6 +1,6 @@
 require_relative '_base'
 
-module Horn
+module HeyYou
   class Builder
     class Push < Base
       attr_reader :body, :title, :data
