@@ -25,9 +25,13 @@ module HeyYou
         data.fetch(current_builder_name)
       end
 
+      alias channel_data ch_data
+
       def ch_options
         options.fetch(current_builder_name, {})
       end
+
+      alias channel_options ch_options
 
       def current_builder_name
         self.class.name.split('::').last.downcase
