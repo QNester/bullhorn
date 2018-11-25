@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Horn::Channels::Email do
+RSpec.describe HeyYou::Channels::Email do
   describe 'send!' do
     context 'all credentials presents' do
       pending 'call mail'

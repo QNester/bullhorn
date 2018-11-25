@@ -1,11 +1,11 @@
 
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "horn/version"
+require "hey_you/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "horn"
-  spec.version       = Horn::VERSION
+  spec.name          = "hey-you"
+  spec.version       = HeyYou::VERSION
   spec.authors       = ["Sergey Nesterov"]
   spec.email         = ["qnesterr@gmail.com"]
 
@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.description   = 'Send multichannel notifications with one command. ' \
     'Сonvenient storage of notifications texts. Create your own channels.' \
     'Registrate receiver send notifications easy.'
-  spec.homepage      = "https://github.com/QNester/horn"
+  spec.homepage      = "https://github.com/QNester/hey_you"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
@@ -23,7 +23,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency "fcm"
-  spec.add_runtime_dependency "twilio-ruby"
   spec.add_runtime_dependency "mail"
   spec.add_runtime_dependency "webpush"
 

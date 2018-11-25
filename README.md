@@ -1,5 +1,5 @@
-# Horn [Alpha]
-[![Build Status](https://travis-ci.com/QNester/horn.svg?branch=master)](https://travis-ci.com/QNester/horn)
+# HeyYou [Alpha]
+[![Build Status](https://travis-ci.com/QNester/hey_you.svg?branch=master)](https://travis-ci.com/QNester/hey_you)
 
 __Gem was not loaded to rubygem server yet.__
 
@@ -24,13 +24,11 @@ him easy.
  2.5.1)
  * FCM - Gem send push notification using [fcm gem](https://github.com/spacialdb/fcm).
  You need *fcm server key* to successful configure push notifications.
- * Twilio - Gem send sms notification using [twilio-ruby gem](twilio-ruby).
-    You need *twilio account sid* and *twilio auth token* to successful configure sms notifications.
 
 ## Installation
 
 ```ruby
-gem 'horn'
+gem 'hey_you'
 ```
 
 And then execute:
@@ -39,14 +37,14 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install horn    
+    $ gem install hey_you    
 
 ## How to use
 
 ### Configure
-First, you must configure Horn. Example:
+First, you must configure HeyYou. Example:
 ```ruby
-  Horn::Config.configure do
+  HeyYou::Config.configure do
     config.collection_file = 'config/notifications.yml'
     config.email.from = 'noreply@example-mail.com'
     config.push.fcm_token = 'fcm_server_key'
@@ -61,13 +59,6 @@ Options for gem base work.
 push messages if setting was not set. You should set it to equal your fcm server key.
 ##### Email
 * __config.email.from__ - Email address for send email notifications.
-##### SMS
-* __config.sms.twilio_account_sid__ - Account sid for twilio. Without this settings 
-you will can not send sms.
-* __config.sms.twilio_auth_token__ - Secret auth token for twilio. Without this setting 
-you will can not send sms.
-* __config.sms.twilio_from_number__ - From number in twilio. Without this setting 
-you will can not send sms.
 
 #### Optional settings
 Additional options for configure your notifications.
@@ -77,7 +68,7 @@ environment. You can set it like `notifications.#{ENV['APP_ENV]}.yml`
 * __config.splitter__ - Chars for split notification keys for 
 builder. Default: `.`
 * __config.registered_channels__ - Avialable channels for your
-applications. Default: `[:sms, :push, :email]`
+applications. Default: `[:push, :email]`
 ##### Push
 * __config.push.priority__ - priority level for your pushes.
 Default: high
@@ -95,10 +86,9 @@ You can easy send notification for receiver with method
 `#send_notification`. For example:
 ```ruby
 class User < Model
-  extend Horn::Receiver
+  extend HeyYou::Receiver
   
   receive(
-    sms: -> { number }, 
     push: -> { push_token.value }, 
     email: -> { email }
   )
@@ -108,8 +98,7 @@ end
 Class method `#receive` will registrate your class User
 as receiver. In arguments we must pass Hash instance where
 keys - channels names as symbols, and values - procs for 
-fetching values required to send notification. For sms channel
-expected that proc will return receiver's mobile number. For push channel
+fetching values required to send notification. For push channel
 expected that proc will return receiver's fcm registration id. For
 email expected that proc will return receiver's email address.
 
@@ -126,20 +115,18 @@ and will try to send SMS, Push and Email for it. What argument we pass
 for method? This is string key for builder. Read next to understand it.
 
 ### Build your notification
-Horn Notification Builder - good system for store your notifications in one place.
+HeyYou Notification Builder - good system for store your notifications in one place.
 You need create yml file with follow format:
 ```yaml
 # config/notifications/collection.yml
 any_key:
   any_nested_key:
-    sms:
-      text: Hello, %{name}
     push:
-      title: Test hello
-      body: Hello, %{name}
+      title: Test hey you
+      body: Hey you, %{name}
     email:
       subject: Test hello
-      body: Hello, %{name}  
+      body: Hey you, %{name}  
 ``` 
 
 You should pass file path to `config.collection_file` to load your notification texts.
@@ -147,29 +134,28 @@ Now you can send notification:
 
 ```ruby
 ...
-user.send_notification('any_key.any_nested_key', name: 'Horn')
+user.send_notification('any_key.any_nested_key', name: 'HeyYou')
 ```
 This command with fetch notifications templates from your collection file 
 for each channel and will try interpolate it. If you will not pass required 
 interpolation keys then error will be raised. After successful interpolation
 notification will send for all available channels for receiver: 
-1) Send sms via twilio
-2) Send push via fcm
-3) Send email
+1) Send push via fcm
+2) Send email
 
 ### Send notification
-Receiver not only one way to send notification. You can send it using `Horn::Sender`.
-Just use method `#send` for Horn::Sender and pass notification key and `to` options
+Receiver not only one way to send notification. You can send it using `HeyYou::Sender`.
+Just use method `#send` for HeyYou::Sender and pass notification key and `to` options
 like:
 
 ```ruby
-Horn::Sender.send!(
+HeyYou::Sender.send!(
   'any_key.any_nested_key', 
   to: {
     push: 'fcm_registration_token', 
     email: 'example_mail@example.com'  
   },
-  name: 'Horn'
+  name: 'HeyYou'
 )
 
 ```
@@ -181,18 +167,17 @@ You can user some options for sender. You can send notification exclude
 not required channels with option `:only` like:
 
 ```ruby
-user.send_notification('any_key.any_nested_key', name: 'Horn', only: [:push, :sms])
+user.send_notification('any_key.any_nested_key', name: 'HeyYou', only: [:push])
 ```
 
-It will send notification only with push and email channels. Sending of sms
-will be skipped.
+It will send notification only with push channel. Email will be skipped.
 
 #### Channels options
 Channels options should pass to send method with associated channel names like:
 ```ruby
 user.send_notification(
   'any_key.any_nested_key', 
-  name: 'Horn', 
+  name: 'HeyYou', 
   email: { layout: 'layout' }
 )
 ```
@@ -202,15 +187,15 @@ specific layout for 'any_key.any_nested_key' notification.
 
 ### Create your own channels
 To create your custom channel you should create two classes:
-1. Horn::Builders::<YOUR_CHANNEL_NAME>
-2. Horn::Channels::<YOUR_CHANNEL_NAME>
+1. HeyYou::Builders::<YOUR_CHANNEL_NAME>
+2. HeyYou::Channels::<YOUR_CHANNEL_NAME>
 
-You must extend your builder class from `Horn::Builder::Base` and realize
+You must extend your builder class from `HeyYou::Builder::Base` and realize
 class method `#build`. In this method you should fetch notification data for 
 Your channel. For example: 
 
 ```ruby
-class Horn::Builder::CustomNotifier < Horn::Builder::Base
+class HeyYou::Builder::CustomNotifier < HeyYou::Builder::Base
   class << self
     attr_reader :header, :body, :icon
   
@@ -228,7 +213,7 @@ Your notifications collection YAML file will contain next:
 ```yaml
 any_key:
   any_nested_key:
-    sms:
+    push:
       # ...
     custom_notifier:
       header: Hello
@@ -238,19 +223,19 @@ any_key:
 
 To check your builder you can call 
 ```ruby
-notifier_data = Horn::Builder.new('any_key.any_nested_key', name: 'Horn').custom_notifier
-notifier_data # => Instance of Horn::Builder::CustomNotifier
+notifier_data = HeyYou::Builder.new('any_key.any_nested_key', name: 'HeyYou').custom_notifier
+notifier_data # => Instance of HeyYou::Builder::CustomNotifier
 notifier_data.header # => Hello
-notifier_data.body # => Hello, Horn
+notifier_data.body # => Hello, HeyYou
 notifier_data.icon # => 'icons.klass'
 ```
 
-You must extend your channel class from `Horn::Channels::Base` and
+You must extend your channel class from `HeyYou::Channels::Base` and
 realize class method `#send!`. This method pass two arguments: builder instance and to option.
 Finally, you channel should look like:
 
 ```ruby
-class Horn::Channels::CustomNotifier < Horn::Channels::Base
+class HeyYou::Channels::CustomNotifier < HeyYou::Channels::Base
   class << self
     def send!(builder, to:)
       custom_notifier_client.send_message(
@@ -264,12 +249,12 @@ end
 ```
 
 If your channel require some configurations you should create class
-`Horn::Config::<YOUR_CHANNEL_NAME>`, extend it with Configurable module and add
+`HeyYou::Config::<YOUR_CHANNEL_NAME>`, extend it with Configurable module and add
 accessors for it. Example:
 
 ```ruby
-class Horn::Config::CustomNotifier
-  extend Horn::Config::Configurable
+class HeyYou::Config::CustomNotifier
+  extend HeyYou::Config::Configurable
 
   attr_accessor :secret_key
   
@@ -283,12 +268,12 @@ If your attr is required you can add checking it
 in your channel:
 
 ```ruby
-class Horn::Channels::CustomNotifier < Horn::Channels::Base
+class HeyYou::Channels::CustomNotifier < HeyYou::Channels::Base
   class << self
     def send!(builder, to:)
       return false unless credentials_present?
     
-      Horn::Config.instance.custom_notifier.client.send_message(
+      HeyYou::Config.instance.custom_notifier.client.send_message(
         text: builder.custom_notifier.text,
         token: to 
       )
@@ -316,8 +301,8 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/horn. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/hey_you. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## Code of Conduct
 
-Everyone interacting in the Horn project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/horn/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the HeyYou project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/hey_you/blob/master/CODE_OF_CONDUCT.md).

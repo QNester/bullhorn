@@ -1,4 +1,4 @@
-module Horn
+module HeyYou
   module Channels
     class Base
       class << self

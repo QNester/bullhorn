@@ -1,6 +1,6 @@
 require_relative '_base'
 
-module Horn
+module HeyYou
   module Channels
     class Push < Base
       class << self

@@ -1,6 +1,6 @@
 require 'singleton'
 
-module Horn
+module HeyYou
   class Config
     module Configurable
 

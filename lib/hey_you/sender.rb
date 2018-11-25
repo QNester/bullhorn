@@ -1,10 +1,9 @@
 require_relative 'builder'
 
 require_relative 'channels/push'
-require_relative 'channels/sms'
 require_relative 'channels/email'
 
-module Horn
+module HeyYou
   class Sender
     class << self
       # Send notifications for receiver

@@ -1,7 +1,7 @@
 require_relative 'conigurable'
 require 'mail'
 
-module Horn
+module HeyYou
   class Config
     class Email
       extend Configurable
