@@ -1,5 +1,5 @@
 # HeyYou [Alpha]
-[![Build Status](https://travis-ci.com/QNester/hey_you.svg?branch=master)](https://travis-ci.com/QNester/hey_you)
+[![Build Status](https://travis-ci.com/QNester/hey-you#)](https://travis-ci.com/QNester/hey_you)
 
 __Gem was not loaded to rubygem server yet.__
 

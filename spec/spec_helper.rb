@@ -24,6 +24,5 @@ RSpec.configure do |config|
     HeyYou::Config.instance_variable_set(:@configured, false)
     HeyYou::Config.instance.instance_variable_set(:@collection, nil)
     HeyYou::Config.instance.instance_variable_set(:@env_collection, nil)
-    HeyYou::Config.instance.instance_variable_set(:@collection_file, TEST_FILE)
   end
 end
