@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.description   = 'Send multichannel notifications with one command. ' \
     'Сonvenient storage of notifications texts. Create your own channels.' \
     'Registrate receiver send notifications easy.'
-  spec.homepage      = "https://github.com/QNester/hey_you"
+  spec.homepage      = "https://github.com/QNester/hey-you"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})

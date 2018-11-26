@@ -1,7 +1,7 @@
 require 'bundler/setup'
 require 'ffaker'
 require 'webmock'
-require 'hey_you'
+require 'hey-you'
 require 'byebug'
 
 Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f }
