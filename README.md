@@ -1,8 +1,6 @@
 # HeyYou [Alpha]
 [![Build Status](https://travis-ci.com/QNester/hey-you.svg?branch=master)](https://travis-ci.com/QNester/hey-you#)
 
-__Gem was not loaded to rubygem server yet.__
-
 Send multichannel notifications with one command. 
 Сonvenient storage of notifications texts. Create your 
 own channels. Registrate receiver and send notifications for 
@@ -28,7 +26,7 @@ him easy.
 ## Installation
 
 ```ruby
-gem 'hey_you'
+gem 'hey-you'
 ```
 
 And then execute:
@@ -37,7 +35,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install hey_you    
+    $ gem install hey-you    
 
 ## How to use
 
