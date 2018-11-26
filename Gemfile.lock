@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    hey-you (0.1.0)
+    hey-you (0.1.2)
       fcm (~> 0.0.2)
       mail (~> 2.7)
 
@@ -51,6 +51,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bundler
   byebug
   ffaker (~> 2.9)
   hey-you!
