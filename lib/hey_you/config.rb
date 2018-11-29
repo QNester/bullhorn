@@ -23,8 +23,8 @@ module HeyYou
 
     class CollectionFileNotDefined < StandardError; end
 
-    attr_reader   :collection, :env_collection, :configured, :registered_receivers, :logger, :log_tag
-    attr_accessor :collection_file, :env_collection_file, :splitter, :registered_channels
+    attr_reader   :collection, :env_collection, :configured, :registered_receivers
+    attr_accessor :collection_file, :env_collection_file, :splitter, :registered_channels, :logger, :log_tag
 
     def initialize
       @registered_channels ||= DEFAULT_REGISTERED_CHANNELS
