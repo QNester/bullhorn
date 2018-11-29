@@ -19,15 +19,18 @@ module HeyYou
 
     DEFAULT_REGISTERED_CHANNELS = %i[email push]
     DEFAULT_SPLITTER = '.'
+    DEFAULT_GLOBAL_LOG_TAG = 'HeyYou'
+
     class CollectionFileNotDefined < StandardError; end
 
-    attr_reader   :collection, :env_collection, :configured, :registered_receivers
+    attr_reader   :collection, :env_collection, :configured, :registered_receivers, :logger, :log_tag
     attr_accessor :collection_file, :env_collection_file, :splitter, :registered_channels
 
     def initialize
       @registered_channels ||= DEFAULT_REGISTERED_CHANNELS
       @splitter ||= DEFAULT_SPLITTER
       @registered_receivers = []
+      @log_tag ||= DEFAULT_GLOBAL_LOG_TAG
       define_ch_config_methods
     end
 
@@ -47,6 +50,7 @@ module HeyYou
     end
 
     def registrate_receiver(receiver_class)
+      log("#{receiver_class} registrated as receiver")
       @registered_receivers << receiver_class
     end
 
@@ -59,6 +63,10 @@ module HeyYou
     def registrate_channel(ch)
       registered_channels << ch.to_sym
       define_ch_config_method(ch)
+    end
+
+    def log(msg)
+      logger&.info("[#{log_tag}] #{msg} ")
     end
 
     private

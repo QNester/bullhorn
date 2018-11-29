@@ -12,8 +12,7 @@ module HeyYou
           public_send(method, builder, to, options)
         end
 
-        # Send email via ActionMailer instance.
-        # User must set mailer_class and mailer_method in notification collection
+        # Send email via custom class instance.
         def send_via_custom_class(builder, to, **options)
           mailer = mailer_class_from_builder(builder, options)
 
@@ -25,6 +24,7 @@ module HeyYou
             builder.email.delivery_method ||
             config.email.default_delivery_method
 
+          log("Build mail via #{mailer}##{mailer_method}. Delivery with #{delivery_method}")
           mailer_msg = mailer.public_send(mailer_method, data: builder.email, to: to)
           mailer_msg.public_send(delivery_method)
         end
@@ -40,7 +40,7 @@ module HeyYou
           end
 
           mail.delivery_method config.email.delivery_method
-          p("[EMAIL] Send mail #{mail}")
+          log("Send mail #{mail}")
           mail.deliver
         end
 
@@ -60,7 +60,10 @@ module HeyYou
             builder.email.mailer_class ||
             config.email.default_mailer_class
           unless mailer_class
-            raise MailerClassNotDefined, 'You must set mailer_class in notifications collection or pass :mailer_class option'
+            raise(
+              MailerClassNotDefined,
+              'You must set mailer_class in notifications collection or pass :mailer_class option'
+            )
           end
 
           begin
