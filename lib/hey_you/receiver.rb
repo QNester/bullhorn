@@ -66,7 +66,6 @@ module HeyYou
       @received_channels = channels
     end
 
-    # We can
     def define_receive_info_methods
       receiver_channels.each do |ch|
         if receiver_data[ch].is_a?(Hash)

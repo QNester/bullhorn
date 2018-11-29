@@ -4,7 +4,9 @@ RSpec.describe HeyYou::Config do
   include_examples :singleton
 
   describe 'attributes' do
-    include_examples :have_accessors, :collection_file, :env_collection_file, :splitter, :registered_channels
+    include_examples(
+      :have_accessors, :collection_file, :env_collection_file, :splitter, :registered_channels, :logger, :log_tag
+    )
     include_examples :have_readers, :collection, :env_collection, :configured, :registered_receivers
   end
 

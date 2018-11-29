@@ -11,8 +11,7 @@ module HeyYou
         def credentials_present?
           required_credentials.all? do |cred|
             if config.send(self.name.split('::').last.downcase).send(cred).nil?
-              # TODO: Log warn
-              p(
+              config.logger&.info(
                 "[WARN] required credential was not set. " +
                 "Set `config.#{self.name.downcase}.#{cred}` to send notification with #{self.name.downcase}"
               )
@@ -28,6 +27,14 @@ module HeyYou
 
         def config
           Config.config
+        end
+
+        def ch_name
+          self.class.name.split('::').last.downcase
+        end
+
+        def log(msg)
+          config.log("[#{ch_name.upcase}] #{msg}")
         end
       end
     end
