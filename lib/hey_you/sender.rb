@@ -18,19 +18,27 @@ module HeyYou
           raise NotRegisteredReceiver, "Class '#{receiver.class}' not registered as receiver"
         end
 
-        to_hash = {}
-        receiver.class.receiver_channels.each do |ch|
-          to_hash[ch] = receiver.send("#{ch}_ch_receive_info")
-        end
-        send!(notification_key, to: to_hash, **options)
+        send!(notification_key, receiver, **options)
       end
 
-      def send!(notification_key, to:, **options)
+      def send!(notification_key, receiver, **options)
+        to_hash = {}
+        receiver.class.receiver_channels.each do |ch|
+          to_hash[ch] = {
+            # Fetch receiver's info for sending: phone_number, email, etc
+            subject: receiver.public_send("#{ch}_ch_receive_info"),
+            # Fetch receiver's options like :mailer_class
+            options: receiver.public_send("#{ch}_ch_receive_options") || {}
+          }
+        end
+
         builder = Builder.new(notification_key, options)
         response = {}
         config.registered_channels.each do |ch|
-          if channel_allowed?(ch, to, builder, options)
-            response[ch] = Channels.const_get(ch.to_s.capitalize).send!(builder, to: to[ch])
+          if channel_allowed?(ch, to_hash, builder, options)
+            response[ch] = Channels.const_get(ch.to_s.capitalize).send!(
+              builder, to: to_hash[ch][:subject], **to_hash[ch][:options]
+            )
           end
         end
         response
@@ -39,7 +47,9 @@ module HeyYou
       private
 
       def channel_allowed?(ch, to, builder, **options)
-        return false unless to[ch.to_sym] || to[ch.to_s]
+        unless to[ch].is_a?(Hash) ? to[ch.to_sym][:subject] || to[ch.to_s][:subject] : to[ch.to_sym] || to[ch.to_s]
+          return false
+        end
         channel_allowed_by_only?(ch, options[:only]) && !builder.send(ch).nil?
       end
 

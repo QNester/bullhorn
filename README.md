@@ -76,6 +76,12 @@ Default 60
 Default 30
 ##### Email
 * __config.email.layout__ - default layout for email letters.
+* __config.email.default_mailing__ - use default mail sending or use custom mailer classes
+* __config.email.default_mailer_class__ - default mailer class for email notifications
+* __config.email.default_mailer_method__ - default mailer_method for mailer_class
+* __config.email.default_delivery_method__ - expects, that mailer_method will build message and delivery_method will send it.
+If you use ActionMailer you can set this option like `delivery_now` or `delivery_later`.
+
 By default all letters will send as simple text.
 
 ### Registrate receiver
@@ -99,6 +105,20 @@ keys - channels names as symbols, and values - procs for
 fetching values required to send notification. For push channel
 expected that proc will return receiver's fcm registration id. For
 email expected that proc will return receiver's email address.
+
+You can pass options for receiver channels. You must pass proc with receive_data to `:subject` key and options 
+pass to `:options` key:
+
+```ruby
+class User < Model
+  extend HeyYou::Receiver
+  
+  receive(
+    push: -> { push_token.value }, 
+    email: { subject: -> { email }, options: { mailer_class: UserMailer, mailer_method: :notify! } }
+  )
+end
+``` 
 
 If you pass correct procs in `#receive` you can send notification
 for your user like:

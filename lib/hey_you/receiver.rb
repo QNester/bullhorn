@@ -32,6 +32,11 @@ module HeyYou
     #     email: -> { priority_email }
     #   )
     #
+    #   ## Or you can use receive with options:
+    #   receive(
+    #     email: { subject: -> { priority_email }, options: { mailer_class: UserMailer, mailer_method: :notify } }
+    #   )
+    #
     #   ...
     # end
     #
@@ -53,14 +58,25 @@ module HeyYou
     def check_channels(channels)
       channels.all? do |ch|
         next if hey_you_config.registered_channels.include?(ch.to_sym)
-        raise NotRegisteredChannel, "Channel #{ch} not registered. Registered channels: #{hey_you_config.registered_channels}"
+        raise(
+          NotRegisteredChannel,
+          "Channel #{ch} not registered. Registered channels: #{hey_you_config.registered_channels}"
+        )
       end
       @received_channels = channels
     end
 
+    # We can
     def define_receive_info_methods
       receiver_channels.each do |ch|
-        self.send(:define_method, "#{ch}_ch_receive_info", receiver_data[ch])
+        if receiver_data[ch].is_a?(Hash)
+          me = self
+          self.send(:define_method, "#{ch}_ch_receive_info", receiver_data[ch].fetch(:subject))
+          self.send(:define_method, "#{ch}_ch_receive_options", -> { me.receiver_data[ch].fetch(:options, {}) })
+        else
+          self.send(:define_method, "#{ch}_ch_receive_info", receiver_data[ch])
+          self.send(:define_method, "#{ch}_ch_receive_options", -> { {} })
+        end
       end
     end
 
@@ -68,6 +84,7 @@ module HeyYou
       Config.config
     end
 
-    class NotRegisteredChannel < StandardError; end
+    class NotRegisteredChannel < StandardError;
+    end
   end
 end
