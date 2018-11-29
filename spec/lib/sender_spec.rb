@@ -1,10 +1,14 @@
 require 'spec_helper'
 require 'dummy/user'
+require 'dummy/rspec_mailer'
 
 RSpec.describe HeyYou::Sender do
   let!(:channels) { [:push, :email] }
   let!(:key) { 'rspec.test_notification' }
   let!(:options) { { pass_variable: FFaker::Lorem.word } }
+
+  let(:user) { User.new }
+  let(:push_token) { user.push_token }
 
   before do
     HeyYou::Config.instance.instance_variable_set(:@registered_channels, channels)
@@ -15,14 +19,13 @@ RSpec.describe HeyYou::Sender do
   end
 
   describe 'class method #send_to' do
-    let!(:receiver_options) { { push: -> { push_token.value } } }
-    before do
-      User.receive(receiver_options)
+    before(:all) do
+      User.receive({ push: -> { push_token.value } })
     end
-    let!(:user) { User.new }
-    let!(:push_token) { user.push_token }
 
-    subject { described_class.send_to(receiver, key, **options) }
+    subject do
+      described_class.send_to(receiver, key, **options)
+    end
 
     context 'invalid receiver' do
       let!(:receiver) { push_token }
@@ -36,30 +39,33 @@ RSpec.describe HeyYou::Sender do
       let!(:receiver) { user }
 
       it 'call send!' do
-        expected_to = {
-          push: user.push_token.value
-        }
-        expect(described_class).to receive(:send!).with(key, to: expected_to, **options)
+        expect(described_class).to receive(:send!).with(key, user, **options)
         subject
       end
     end
   end
 
   describe 'class method #send!' do
+    before(:all) do
+      User.receive(
+        push: -> { push_token.value },
+        email: { subject: -> { email[:address] }, options: { mailer_class: RspecMailer } }
+      )
+    end
+
     let!(:to) do
       {
-        sms: FFaker::PhoneNumber.phone_number,
-        push: SecureRandom.uuid,
-        email: FFaker::Internet.email
+        push: { subject: user.push_token.value, options: {} },
+        email: { subject: user.email[:address], options: { mailer_class: RspecMailer } }
       }
     end
 
-    subject { described_class.send!(key, to: to, **options) }
+    subject { described_class.send!(key, user, **options) }
 
     it 'call channel\'s #send! for each allowed registered channel' do
       channels.each do |ch|
         expect(HeyYou::Channels.const_get(ch.to_s.capitalize)).to(
-          receive(:send!).with(instance_of(HeyYou::Builder), to: to[ch])
+          receive(:send!).with(instance_of(HeyYou::Builder), to: to[ch][:subject], **to[ch][:options])
         )
       end
 
@@ -71,9 +77,7 @@ RSpec.describe HeyYou::Sender do
       let!(:excluded_channels) { channels - [options[:only]] }
 
       it 'send for channel from only and not send for channel not from only' do
-        expect(HeyYou::Channels.const_get(options[:only].to_s.capitalize)).to(
-          receive(:send!).with(instance_of(HeyYou::Builder), to: to[options[:only]])
-        )
+        expect(HeyYou::Channels.const_get(options[:only].to_s.capitalize)).to receive(:send!)
 
         excluded_channels.each do |ch|
           expect(HeyYou::Channels.const_get(ch.to_s.capitalize)).not_to receive(:send!)
