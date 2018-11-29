@@ -6,7 +6,7 @@ module HeyYou
       class << self
         def send!(builder, to:, **options)
           options = build_options(builder)
-          p("[PUSH] Send #{options} body for #{ids(to)}")
+          config.logger&.info("[PUSH] Send #{options} body for #{ids(to)}")
           config.push.fcm_client.send(ids(to), options)
         end
 
