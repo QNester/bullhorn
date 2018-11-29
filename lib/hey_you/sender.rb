@@ -18,7 +18,8 @@ module HeyYou
           raise NotRegisteredReceiver, "Class '#{receiver.class}' not registered as receiver"
         end
 
-        send!(notification_key, receiver, **options)
+        result = send!(notification_key, receiver, **options)
+        config.log("Sender result: #{result}")
       end
 
       def send!(notification_key, receiver, **options)
@@ -36,9 +37,15 @@ module HeyYou
         response = {}
         config.registered_channels.each do |ch|
           if channel_allowed?(ch, to_hash, builder, options)
+            config.log(
+              "Send #{ch} to #{to_hash[ch][:subject]} with data: #{builder.send(ch).data}" \
+              " and options: #{to_hash[ch][:options]}"
+            )
             response[ch] = Channels.const_get(ch.to_s.capitalize).send!(
               builder, to: to_hash[ch][:subject], **to_hash[ch][:options]
             )
+          else
+            config.log("Channel #{ch} not allowed.")
           end
         end
         response
