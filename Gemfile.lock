@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    hey-you (0.1.3)
+    hey-you (0.1.4)
       fcm (~> 0.0.2)
       mail (~> 2.7)
 
