@@ -4,7 +4,7 @@ module HeyYou
   module Channels
     class Push < Base
       class << self
-        def send!(builder, to:)
+        def send!(builder, to:, **options)
           options = build_options(builder)
           p("[PUSH] Send #{options} body for #{ids(to)}")
           config.push.fcm_client.send(ids(to), options)
