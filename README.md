@@ -42,7 +42,7 @@ Or install it yourself as:
 First, you must configure HeyYou. Example:
 ```ruby
   HeyYou::Config.configure do
-    config.collection_file = 'config/notifications.yml'
+    config.collection_files = ['config/notifications.yml']
     config.email.from = 'noreply@example-mail.com'
     config.push.fcm_token = 'fcm_server_key'
   end
@@ -50,7 +50,7 @@ First, you must configure HeyYou. Example:
 #### Required settings
 Options for gem base work.
 ##### Base
-* __config.collection_file__ - File contained all your notifications texts.
+* __config.collection_files__ - File or files contained all your notifications texts.
 ##### Push
 * __config.push.fcm_token__ - Required setting for push channel. You can not send
 push messages if setting was not set. You should set it to equal your fcm server key.
@@ -66,6 +66,54 @@ environment. You can set it like `notifications.#{ENV['APP_ENV]}.yml`
 builder. Default: `.`
 * __config.registered_channels__ - Avialable channels for your
 applications. Default: `[:push, :email]`
+* __config.localization__ - Boolean. If true, hey-you begin support I18n locales for notifications collection. Your
+notifications for build should be nested in `I18n.locale` key. For example:
+
+```ruby
+# config/initializers/hey-you.rb
+HeyYou::Config.configure do
+  ...
+  config.collection_files = I18n.available_locales.map { |locale| "config/notifications/#{locale}.yml" }
+  ...
+end 
+```
+
+```yaml
+# config/notifications/en.yml
+en:
+	any_key:
+    any_nested_key:
+      push:
+        title: Test hey you
+        body: Hey you, %{name}
+      email:
+        subject: Test hello
+        body: Hey you, %{name}  
+```
+
+```yaml
+# config/notifications/en.yml
+en:
+	any_key:
+    any_nested_key:
+      push:
+        title: Эй, ты!
+        body: Эй, ты, %{name}
+      email:
+        subject: Привет
+        body: Эй, ты, %{name}  
+```
+
+```ruby
+# From your code:
+I18n.locale = :ru
+user.send_notification('any_key.any_nested_key', name: 'QNester') #=> send notification with body `Эй, ты, QNester`
+I18n.locale = :en
+user.send_notification('any_key.any_nested_key', name: 'QNester') #=> send notification with body `Hey you, QNester`
+user.send_notification('any_key.any_nested_key', name: 'QNester', locale: :ru) #=> send notification with body `Эй, ты, QNester`
+
+```
+
 ##### Push
 * __config.push.priority__ - priority level for your pushes.
 Default: high

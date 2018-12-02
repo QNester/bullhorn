@@ -1,11 +1,6 @@
 module HeyYou
   class Builder
     class Base
-      INTERPOLATION_PATTERN = Regexp.union(
-        /%%/,
-        /%\{(\w+)\}/, # matches placeholders like "%{foo}"
-      )
-
       attr_reader :data, :key, :options
 
       def initialize(data, key, **options)
@@ -19,6 +14,8 @@ module HeyYou
 
       def interpolate(notification_string, options)
         notification_string % options
+      rescue KeyError => err
+        raise InterpolationError, "Failed build notification string `#{notification_string}`: #{err.message}"
       end
 
       def ch_data
@@ -36,6 +33,8 @@ module HeyYou
       def current_builder_name
         self.class.name.split('::').last.downcase
       end
+
+      class InterpolationError < StandardError; end
     end
   end
 end
