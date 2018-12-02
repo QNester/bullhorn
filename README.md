@@ -82,26 +82,26 @@ end
 # config/notifications/en.yml
 en:
 	any_key:
-    any_nested_key:
-      push:
-        title: Test hey you
-        body: Hey you, %{name}
-      email:
-        subject: Test hello
-        body: Hey you, %{name}  
+		any_nested_key:
+			push:
+				title: Test hey you
+				body: Hey you, %{name}
+			email:
+				subject: Test hello
+				body: Hey you, %{name}  
 ```
 
 ```yaml
 # config/notifications/en.yml
 en:
 	any_key:
-    any_nested_key:
-      push:
-        title: Эй, ты!
-        body: Эй, ты, %{name}
-      email:
-        subject: Привет
-        body: Эй, ты, %{name}  
+		any_nested_key:
+			push:
+				title: Эй, ты!
+				body: Эй, ты, %{name}
+			email:
+				subject: Привет
+				body: Эй, ты, %{name}  
 ```
 
 ```ruby
