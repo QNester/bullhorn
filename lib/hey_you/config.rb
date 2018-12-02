@@ -20,24 +20,29 @@ module HeyYou
     DEFAULT_REGISTERED_CHANNELS = %i[email push]
     DEFAULT_SPLITTER = '.'
     DEFAULT_GLOBAL_LOG_TAG = 'HeyYou'
+    DEFAULT_LOCALIZATION_FLAG = false
 
     class CollectionFileNotDefined < StandardError; end
 
     attr_reader   :collection, :env_collection, :configured, :registered_receivers
-    attr_accessor :collection_file, :env_collection_file, :splitter, :registered_channels, :logger, :log_tag
+    attr_accessor(
+      :collection_files, :env_collection_file, :splitter,
+      :registered_channels, :localization, :logger, :log_tag
+    )
 
     def initialize
       @registered_channels ||= DEFAULT_REGISTERED_CHANNELS
       @splitter ||= DEFAULT_SPLITTER
       @registered_receivers = []
       @log_tag ||= DEFAULT_GLOBAL_LOG_TAG
+      @localization ||= DEFAULT_LOCALIZATION_FLAG
       define_ch_config_methods
     end
 
     def collection_file
-      @collection_file || raise(
+      @collection_files || raise(
         CollectionFileNotDefined,
-        'You must define HeyYou::Config.collection_file'
+        'You must define HeyYou::Config.collection_files'
       )
     end
 
@@ -88,7 +93,11 @@ module HeyYou
 
     # Load yaml from collection_file and merge it with yaml from env_collection_file
     def load_collection
-      notification_collection = YAML.load_file(collection_file)
+      @collection_files = [collection_files] if collection_files.is_a?(String)
+      notification_collection = {}
+      collection_files.each do |file|
+        notification_collection.merge!(YAML.load_file(file))
+      end
       notification_collection.merge!(env_collection)
     end
 

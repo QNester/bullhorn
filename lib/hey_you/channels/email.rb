@@ -39,7 +39,7 @@ module HeyYou
             body context.get_body(builder.email.body)
           end
 
-          mail.delivery_method config.email.delivery_method
+          mail.delivery_method config.email.mail_delivery_method
           log("Send mail #{mail}")
           mail.deliver
         end

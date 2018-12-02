@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "fcm", '~> 0.0.2'
   spec.add_runtime_dependency "mail", '~> 2.7'
+  spec.add_runtime_dependency "i18n", '~> 1.0'
 
   spec.add_development_dependency "rake", '~> 10.5'
   spec.add_development_dependency "rspec", '~> 3.7'

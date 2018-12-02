@@ -1,6 +1,6 @@
+require 'i18n'
 require_relative 'builder/email'
 require_relative 'builder/push'
-require 'byebug'
 
 module HeyYou
   class Builder
@@ -11,7 +11,7 @@ module HeyYou
     #   `instance.<ch_name>`. It will be return instance of HeyYou::Builder::<YOUR_CHANNEL_NAME>
     #
     def initialize(key, **options)
-      @data = fetch_from_collection_by_key(key)
+      @data = fetch_from_collection_by_key(key, options[:locale])
       @options = options
       config.registered_channels.each do |ch|
         ch_builder =
@@ -29,8 +29,14 @@ module HeyYou
       self.class.send(:define_method, ch, method_proc)
     end
 
-    def fetch_from_collection_by_key(key)
-      keys = key.to_s.split(config.splitter)
+    def fetch_from_collection_by_key(key, locale)
+      keys = []
+      if config.localization
+        locale = locale || I18n.locale
+        raise UnknownLocale, 'You should pass locale.' unless locale
+        keys << locale
+      end
+      keys = keys + key.to_s.split(config.splitter)
       keys.reduce(config.collection) do |memo, nested_key|
         memo[nested_key.to_s] if memo
       end
@@ -39,5 +45,7 @@ module HeyYou
     def config
       Config.config
     end
+
+    class UnknownLocale < StandardError; end
   end
 end

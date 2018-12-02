@@ -7,6 +7,26 @@ events:
       subject: Hello subject
       body: Hello body
 
+ru:
+  rspec:
+    test_notification:
+      push:
+        title: Тесты RU, %{pass_variable}
+        body: Тесты RU, %{pass_variable}
+      email:
+        subject: Тесты RU, %{pass_variable}
+        body: Тесты RU, %{pass_variable}
+
+en:
+  rspec:
+    test_notification:
+      push:
+        title: Tests for EN, %{pass_variable}
+        body: Tests for EN, %{pass_variable}
+      email:
+        subject: Tests for EN, %{pass_variable}
+        body: Tests for EN, %{pass_variable}
+
 rspec:
   test_notification:
     push:
@@ -40,5 +60,4 @@ rspec:
       subject: Test, %{pass_variable}
       body: Test, %{pass_variable}
       mailer_method: welcome
-
 

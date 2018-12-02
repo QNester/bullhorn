@@ -9,7 +9,7 @@ RSpec.describe HeyYou::Channels::Email do
   before do
     HeyYou::Config.instance.instance_variable_set(:@splitter, '.')
     HeyYou::Config.configure do
-      config.collection_file = TEST_FILE
+      config.collection_files = TEST_FILE
     end
   end
 
@@ -179,7 +179,7 @@ RSpec.describe HeyYou::Channels::Email do
       context 'all credentials presents' do
         before do
           HeyYou::Config.instance.email.from = from
-          HeyYou::Config.instance.email.delivery_method = :test
+          HeyYou::Config.instance.email.mail_delivery_method = :test
           HeyYou::Config::Email.instance.instance_variable_set(:@default_mailing, true)
         end
 
