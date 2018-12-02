@@ -5,7 +5,8 @@ RSpec.describe HeyYou::Config do
 
   describe 'attributes' do
     include_examples(
-      :have_accessors, :collection_file, :env_collection_file, :splitter, :registered_channels, :logger, :log_tag
+      :have_accessors, :collection_files, :env_collection_file, :splitter,
+      :registered_channels, :logger, :log_tag, :localization
     )
     include_examples :have_readers, :collection, :env_collection, :configured, :registered_receivers
   end
@@ -27,16 +28,16 @@ RSpec.describe HeyYou::Config do
       end
     end
 
-    describe 'collection_file' do
+    describe 'collection_files' do
       FILENAME = 'spec/fixtures/notifications.yml'
       ENV_FILENAME = 'spec/fixtures/notifications_env.yml'
 
       before do
-        described_class.configure { config.collection_file = FILENAME }
+        described_class.configure { config.collection_files = FILENAME }
       end
 
       it 'return collection file path' do
-        expect(described_class.instance.collection_file).to eq(FILENAME)
+        expect(described_class.instance.collection_files).to eq(FILENAME)
       end
 
       it 'load notifications into #collection' do
@@ -50,7 +51,7 @@ RSpec.describe HeyYou::Config do
           described_class.instance.instance_variable_set(:@env_collection, nil)
 
           described_class.configure do
-            config.collection_file = FILENAME
+            config.collection_files = FILENAME
             config.env_collection_file = ENV_FILENAME
           end
         end
