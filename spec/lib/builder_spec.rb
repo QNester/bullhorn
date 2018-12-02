@@ -4,7 +4,7 @@ RSpec.describe HeyYou::Builder do
   before do
     HeyYou::Config.instance.instance_variable_set(:@splitter, '.')
     HeyYou::Config.configure do
-      config.collection_file = TEST_FILE
+      config.collection_files = TEST_FILE
     end
   end
 
@@ -28,11 +28,41 @@ RSpec.describe HeyYou::Builder do
       end
     end
 
-    context 'not pass options for interpolate' do
+    context 'not pass options for interpolate', focus: true do
       let!(:options) { {} }
 
-      it 'define channels methods' do
-        expect { subject }.to raise_error(KeyError)
+      it 'raise error InterpolationError' do
+        expect { subject }.to raise_error(HeyYou::Builder::Base::InterpolationError)
+      end
+    end
+
+    context 'localization options is true' do
+      let!(:key) { 'rspec.test_notification' }
+      let!(:pass_variable) { SecureRandom.uuid }
+      let!(:options) { { pass_variable: pass_variable } }
+
+      before do
+        HeyYou::Config.instance.instance_variable_set(:@localization, true)
+      end
+
+      after do
+        HeyYou::Config.instance.instance_variable_set(:@localization, false)
+      end
+
+      context 'pass locale options' do
+        before { options.merge!(locale: :ru) }
+
+        it 'build data for locale' do
+          expect(subject.data).to be_instance_of(Hash)
+          expect(subject.data['push']['title']).to match('RU')
+        end
+      end
+
+      context 'locale option not pass' do
+        it 'build data for locale' do
+          expect(subject.data).to be_instance_of(Hash)
+          expect(subject.data['push']['title']).to match(I18n.locale.to_s.upcase)
+        end
       end
     end
   end

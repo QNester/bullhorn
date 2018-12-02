@@ -20,6 +20,7 @@ module HeyYou
 
         result = send!(notification_key, receiver, **options)
         config.log("Sender result: #{result}")
+        result
       end
 
       def send!(notification_key, receiver, **options)
