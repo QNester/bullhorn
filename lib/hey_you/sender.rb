@@ -34,16 +34,20 @@ module HeyYou
           }
         end
 
+        send_to_receive_info(notification_key, to_hash, options)
+      end
+
+      def send_to_receive_info(notification_key, receive_info, **options)
         builder = Builder.new(notification_key, options)
         response = {}
         config.registered_channels.each do |ch|
-          if channel_allowed?(ch, to_hash, builder, options)
+          if channel_allowed?(ch, receive_info, builder, options)
             config.log(
-              "Send #{ch} to #{to_hash[ch][:subject]} with data: #{builder.send(ch).data}" \
-              " and options: #{to_hash[ch][:options]}"
+              "Send #{ch}-message to #{receive_info[ch][:subject]} with data: #{builder.send(ch).data}" \
+              " and options: #{receive_info[ch][:options]}"
             )
             response[ch] = Channels.const_get(ch.to_s.capitalize).send!(
-              builder, to: to_hash[ch][:subject], **to_hash[ch][:options]
+              builder, to: receive_info[ch][:subject], **receive_info[ch][:options]
             )
           else
             config.log("Channel #{ch} not allowed.")
