@@ -359,7 +359,7 @@ in your channel config.
 Now, when you will send notification, it will be send with your channel too.
 
 ## Extensions
-* [Slack channel](https://github.com/QNester/hey-you) 
+* [Slack channel](https://github.com/QNester/hey-you-slack) 
 [![Gem Version](https://badge.fury.io/rb/hey-you-slack.svg)](https://badge.fury.io/rb/hey-you-slack)
 
 ## Development
