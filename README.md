@@ -15,6 +15,7 @@ him easy.
     * [Send notification](#send-notification)
     * [Sender options](#sender-options)
     * [Create your own channels](#create-your-own-channels)    
+* [Extensions](#extensions)    
 
 
 ## Requirements
@@ -357,6 +358,9 @@ in your channel config.
 
 Now, when you will send notification, it will be send with your channel too.
 
+## Extensions
+* [Slack channel](https://github.com/QNester/hey-you) 
+[![Gem Version](https://badge.fury.io/rb/hey-you-slack.svg)](https://badge.fury.io/rb/hey-you-slack)
 
 ## Development
 
