@@ -46,8 +46,9 @@ module HeyYou
               "Send #{ch}-message to #{receive_info[ch][:subject]} with data: #{builder.send(ch).data}" \
               " and options: #{receive_info[ch][:options]}"
             )
+            receive_options = receive_info[ch].fetch(:options, {}) || {}
             response[ch] = Channels.const_get(ch.to_s.capitalize).send!(
-              builder, to: receive_info[ch][:subject], **receive_info[ch][:options]
+              builder, to: receive_info[ch][:subject], **receive_options
             )
           else
             config.log("Channel #{ch} not allowed.")
