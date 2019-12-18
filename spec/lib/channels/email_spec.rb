@@ -23,7 +23,7 @@ RSpec.describe HeyYou::Channels::Email do
     context 'not default mailer' do
       before do
         HeyYou::Config.instance.email.from = from
-        HeyYou::Config::Email.instance.instance_variable_set(:@default_mailing, false)
+        HeyYou::Config::Email.instance.instance_variable_set(:@use_default_mailing, false)
       end
 
       context 'set mailer_class' do
@@ -180,7 +180,7 @@ RSpec.describe HeyYou::Channels::Email do
         before do
           HeyYou::Config.instance.email.from = from
           HeyYou::Config.instance.email.mail_delivery_method = :test
-          HeyYou::Config::Email.instance.instance_variable_set(:@default_mailing, true)
+          HeyYou::Config::Email.instance.instance_variable_set(:@use_default_mailing, true)
         end
 
         it 'send email' do
@@ -195,6 +195,7 @@ RSpec.describe HeyYou::Channels::Email do
 
       context 'not all credentials presents' do
         before do
+          HeyYou::Config.instance.email.use_default_mailing = true
           HeyYou::Config.instance.email.from = nil
         end
 
