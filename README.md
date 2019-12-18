@@ -1,5 +1,6 @@
 # HeyYou [Alpha]
 [![Build Status](https://travis-ci.com/QNester/hey-you.svg?branch=master)](https://travis-ci.com/QNester/hey-you#)
+[![Gem Version](https://badge.fury.io/rb/hey-you.svg)](https://badge.fury.io/rb/hey-you)
 
 Send multichannel notifications with one command. 
 Сonvenient storage of notifications texts. Create your 
@@ -67,14 +68,18 @@ environment. You can set it like `notifications.#{ENV['APP_ENV]}.yml`
 builder. Default: `.`
 * __config.registered_channels__ - Avialable channels for your
 applications. Default: `[:push, :email]`
+* __config.require_all_channels__ - Boolean. If true, when data for channel will not found in 
+file collection, error will be raised. Default: `false`
 * __config.localization__ - Boolean. If true, hey-you begin support I18n locales for notifications collection. Your
-notifications for build should be nested in `I18n.locale` key. For example:
+notifications for build should be nested in `I18n.locale` key. Default: `false`. For example:
 
 ```ruby
 # config/initializers/hey-you.rb
 HeyYou::Config.configure do
   ...
-  config.collection_files = I18n.available_locales.map { |locale| "config/notifications/#{locale}.yml" }
+  config.collection_files = Rails.application.config.i18n.available_locales.map do |locale|
+    "config/notifications/#{locale}.yml" 
+  end 
   ...
 end 
 ```
@@ -124,7 +129,7 @@ Default 60
 Default 30
 ##### Email
 * __config.email.layout__ - default layout for email letters.
-* __config.email.default_mailing__ - use default mail sending or use custom mailer classes
+* __config.email.use_default_mailing__ - use default mail sending or use custom mailer classes
 * __config.email.default_mailer_class__ - default mailer class for email notifications
 * __config.email.default_mailer_method__ - default mailer_method for mailer_class
 * __config.email.default_delivery_method__ - expects, that mailer_method will build message and delivery_method will send it.
