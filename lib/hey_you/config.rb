@@ -1,7 +1,7 @@
 require 'yaml'
-require_relative 'config/conigurable'
-require_relative 'config/push'
-require_relative 'config/email'
+require 'hey_you/config/conigurable'
+require 'hey_you/config/push'
+require 'hey_you/config/email'
 
 #
 # @config REQUIRED collection_file [String] - File path for general notifications file
@@ -17,7 +17,15 @@ module HeyYou
   class Config
     extend Configurable
 
-    DEFAULT_REGISTERED_CHANNELS = %i[email push]
+    DEFAULTS = {
+      registered_channels: %i[email push],
+      splitter: '.',
+      log_tag: 'HeyYou',
+      localization: false,
+      require_all_channels: false
+    }
+
+    DEFAULT_REGISTERED_CHANNELS =
     DEFAULT_SPLITTER = '.'
     DEFAULT_GLOBAL_LOG_TAG = 'HeyYou'
     DEFAULT_LOCALIZATION_FLAG = false
@@ -27,15 +35,17 @@ module HeyYou
     attr_reader   :collection, :env_collection, :configured, :registered_receivers
     attr_accessor(
       :collection_files, :env_collection_file, :splitter,
-      :registered_channels, :localization, :logger, :log_tag
+      :registered_channels, :localization, :logger, :log_tag,
+      :require_all_channels
     )
 
     def initialize
-      @registered_channels ||= DEFAULT_REGISTERED_CHANNELS
-      @splitter ||= DEFAULT_SPLITTER
+      @registered_channels ||= DEFAULTS[:registered_channels]
+      @splitter ||= DEFAULTS[:splitter]
       @registered_receivers = []
-      @log_tag ||= DEFAULT_GLOBAL_LOG_TAG
-      @localization ||= DEFAULT_LOCALIZATION_FLAG
+      @log_tag ||= DEFAULTS[:log_tag]
+      @localization ||= DEFAULTS[:localization]
+      @require_all_channels = DEFAULTS[:require_all_channels]
       define_ch_config_methods
     end
 

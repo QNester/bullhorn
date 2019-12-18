@@ -1,4 +1,4 @@
-require_relative 'conigurable'
+require 'hey_you/config/conigurable'
 require 'mail'
 
 module HeyYou
