@@ -1,6 +1,10 @@
+require 'hey_you/helper'
 module HeyYou
   module Channels
     class Base
+      include HeyYou::Helper
+      extend HeyYou::Helper
+
       class << self
         def send!
           raise NotImplementedError, 'You should define #send! method in your channel.'
@@ -23,10 +27,6 @@ module HeyYou
 
         def required_credentials
           []
-        end
-
-        def config
-          Config.config
         end
 
         def ch_name

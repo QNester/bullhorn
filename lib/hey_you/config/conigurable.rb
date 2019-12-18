@@ -11,14 +11,15 @@ module HeyYou
       end
 
       def configure(&block)
-        # TODO: log warn "Already configured" instead nil
-        @configured ? nil : instance_eval(&block)
+        @configured ? raise(AlreadyConfiguredError, 'You already configure HeyYou') : instance_eval(&block)
         @configured = true
       end
 
       def config
         @config ||= self.instance
       end
+
+      class AlreadyConfiguredError < StandardError; end
     end
   end
 end

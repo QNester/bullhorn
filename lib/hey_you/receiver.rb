@@ -1,7 +1,10 @@
-require_relative 'sender'
+require 'hey_you/sender'
+require 'hey_you/helper'
 
 module HeyYou
   module Receiver
+    include HeyYou::Helper
+
     attr_reader :receiver_channels, :receiver_data
 
     def self.extended klass
@@ -48,7 +51,7 @@ module HeyYou
 
       @receiver_data = receiver_data
       @receiver_channels = receiver_data.keys
-      hey_you_config.registrate_receiver(self)
+      config.registrate_receiver(self)
 
       define_receive_info_methods
     end
@@ -57,10 +60,10 @@ module HeyYou
 
     def check_channels(channels)
       channels.all? do |ch|
-        next if hey_you_config.registered_channels.include?(ch.to_sym)
+        next if config.registered_channels.include?(ch.to_sym)
         raise(
           NotRegisteredChannel,
-          "Channel #{ch} not registered. Registered channels: #{hey_you_config.registered_channels}"
+          "Channel #{ch} not registered. Registered channels: #{config.registered_channels}"
         )
       end
       @received_channels = channels
@@ -77,10 +80,6 @@ module HeyYou
           self.send(:define_method, "#{ch}_ch_receive_options", -> { {} })
         end
       end
-    end
-
-    def hey_you_config
-      Config.config
     end
 
     class NotRegisteredChannel < StandardError;

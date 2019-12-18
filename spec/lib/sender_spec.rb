@@ -85,5 +85,32 @@ RSpec.describe HeyYou::Sender do
         subject
       end
     end
+
+    context 'data for channel not exists' do
+      let!(:key) { 'rspec.test_notification_no_push' }
+
+      context 'config.require_all_channels is true' do
+        before do
+          allow(HeyYou::Config.instance).to receive(:require_all_channels).and_return(true)
+        end
+
+        it 'raise RequiredChannelNotFound' do
+          expect { subject }.to raise_error(HeyYou::Builder::RequiredChannelNotFound)
+        end
+      end
+
+      context 'config.require_all_channels is false' do
+        before do
+          allow(HeyYou::Config.instance).to receive(:require_all_channels).and_return(false)
+        end
+
+        it 'build only email channel' do
+          expect(HeyYou::Channels::Email).to receive(:send!)
+          expect(HeyYou::Channels::Push).not_to receive(:send!)
+
+          subject
+        end
+      end
+    end
   end
 end
