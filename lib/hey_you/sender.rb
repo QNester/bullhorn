@@ -1,10 +1,13 @@
-require_relative 'builder'
-
-require_relative 'channels/push'
-require_relative 'channels/email'
+require 'hey_you/helper'
+require 'hey_you/builder'
+require 'hey_you/channels/push'
+require 'hey_you/channels/email'
 
 module HeyYou
   class Sender
+    include HeyYou::Helper
+    extend HeyYou::Helper
+
     class << self
       # Send notifications for receiver
       #
@@ -41,9 +44,9 @@ module HeyYou
         builder = Builder.new(notification_key, options)
         response = {}
         config.registered_channels.each do |ch|
-          if channel_allowed?(ch, receive_info, builder, options)
+          if channel_allowed?(ch, receive_info, builder, options) && builder.respond_to?(ch) && builder.public_send(ch)
             config.log(
-              "Send #{ch}-message to #{receive_info[ch][:subject]} with data: #{builder.send(ch).data}" \
+              "Send #{ch}-message to #{receive_info[ch][:subject]} with data: #{builder.public_send(ch).data}" \
               " and options: #{receive_info[ch][:options]}"
             )
             receive_options = receive_info[ch].fetch(:options, {}) || {}
@@ -60,9 +63,8 @@ module HeyYou
       private
 
       def channel_allowed?(ch, to, builder, **options)
-        unless to[ch].is_a?(Hash) ? to[ch.to_sym][:subject] || to[ch.to_s][:subject] : to[ch.to_sym] || to[ch.to_s]
-          return false
-        end
+        condition = to[ch].is_a?(Hash) ? to[ch.to_sym][:subject] || to[ch.to_s][:subject] : to[ch.to_sym] || to[ch.to_s]
+        return false unless condition
         channel_allowed_by_only?(ch, options[:only]) && !builder.send(ch).nil?
       end
 
@@ -74,10 +76,6 @@ module HeyYou
         return true unless only
         return only.map(&:to_sym).include?(ch.to_sym) if only.is_a?(Array)
         only.to_sym == ch.to_sym
-      end
-
-      def config
-        Config.config
       end
     end
 

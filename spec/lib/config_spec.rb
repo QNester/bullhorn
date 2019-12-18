@@ -6,7 +6,7 @@ RSpec.describe HeyYou::Config do
   describe 'attributes' do
     include_examples(
       :have_accessors, :collection_files, :env_collection_file, :splitter,
-      :registered_channels, :logger, :log_tag, :localization
+      :registered_channels, :logger, :log_tag, :localization, :require_all_channels
     )
     include_examples :have_readers, :collection, :env_collection, :configured, :registered_receivers
   end
@@ -83,7 +83,7 @@ RSpec.describe HeyYou::Config do
 
       context 'default channels' do
         it 'define method for all channels', :skip_before do
-          HeyYou::Config::DEFAULT_REGISTERED_CHANNELS.each do |ch|
+          HeyYou::Config::DEFAULTS[:registered_channels].each do |ch|
             found_method = described_class.instance.public_methods.find { |method| method == ch }
             expect(found_method).not_to eq(nil)
           end

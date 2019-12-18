@@ -35,6 +35,10 @@ rspec:
     email:
       subject: Test, %{pass_variable}
       body: Test, %{pass_variable}
+  test_notification_no_push:
+    email:
+      subject: Test, %{pass_variable}
+      body: Test, %{pass_variable}
   test_notification_with_mailer_class:
     push:
       title: Test, %{pass_variable}

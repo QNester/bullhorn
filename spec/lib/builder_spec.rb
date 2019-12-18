@@ -5,11 +5,13 @@ RSpec.describe HeyYou::Builder do
     HeyYou::Config.instance.instance_variable_set(:@splitter, '.')
     HeyYou::Config.configure do
       config.collection_files = TEST_FILE
+      config.require_all_channels = true
     end
   end
 
   describe '#new' do
     let!(:key) { 'rspec.test_notification' }
+
     subject { described_class.new(key, options) }
 
     context 'pass options for interpolate' do
@@ -28,7 +30,7 @@ RSpec.describe HeyYou::Builder do
       end
     end
 
-    context 'not pass options for interpolate', focus: true do
+    context 'not pass options for interpolate' do
       let!(:options) { {} }
 
       it 'raise error InterpolationError' do
@@ -63,6 +65,50 @@ RSpec.describe HeyYou::Builder do
           expect(subject.data).to be_instance_of(Hash)
           expect(subject.data['push']['title']).to match(I18n.locale.to_s.upcase)
         end
+      end
+    end
+
+    context 'data for channel not exists' do
+      let!(:pass_variable) { SecureRandom.uuid }
+      let!(:key) { 'rspec.test_notification_no_push' }
+      let!(:options) { { pass_variable: pass_variable } }
+
+      context 'config.require_all_channels is true' do
+        before do
+          allow(HeyYou::Config.instance).to receive(:require_all_channels).and_return(true)
+        end
+
+        it 'raise RequiredChannelNotFound' do
+          expect { subject }.to raise_error(HeyYou::Builder::RequiredChannelNotFound)
+        end
+      end
+
+      context 'config.require_all_channels is false' do
+        before do
+          allow(HeyYou::Config.instance).to receive(:require_all_channels).and_return(false)
+        end
+
+        it 'build email channel' do
+          expected_class = described_class::Email
+          expect(subject.email).to be_instance_of(expected_class)
+        end
+
+        # Flow-broken test. I have no idea how to fix it.
+        # If you are seeing it and wanna fix flow-bugget test:
+        # remove begin block anduse seed 32560
+        # Sorry :(
+        it 'raise when build push channel' do
+          expect(subject.push).to eq(nil)
+        end
+      end
+    end
+
+    context 'data key not exists' do
+      let!(:key) { "#{FFaker::Lorem.word}.#{FFaker::Lorem.word}" }
+      let!(:options) { {} }
+
+      it 'raise DataNotFound error' do
+        expect { subject }.to raise_error(described_class::DataNotFound)
       end
     end
   end
