@@ -13,7 +13,7 @@ module HeyYou
       attr_accessor(
         :from,
         :mail_delivery_method,
-        :default_mailing,
+        :use_default_mailing,
         :default_delivery_method,
         :default_mailer_class,
         :default_mailer_method
@@ -21,7 +21,7 @@ module HeyYou
 
       def initialize
         @mail_delivery_method ||= MAIL_DELIVERY_METHOD
-        @default_mailing ||= !default_mailer_class.nil?
+        @use_default_mailing ||= !default_mailer_class.nil?
         @async ||= true
         @default_mailer_method ||= DEFAULT_ACTION_MAILER_METHOD
         @default_delivery_method ||= DEFAULT_DELIVERY_METHOD
