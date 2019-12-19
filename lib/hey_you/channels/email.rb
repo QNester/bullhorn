@@ -19,7 +19,7 @@ module HeyYou
             config.email.default_delivery_method
 
           log("Build mail via #{mailer}##{mailer_method}. Delivery with #{delivery_method}")
-          mailer_msg = mailer.public_send(mailer_method, data: builder.email, to: to)
+          mailer_msg = mailer.public_send(mailer_method, data: builder.email.to_hash, to: to)
           return mailer_msg.public_send(delivery_method) if mailer_msg.respond_to?(delivery_method)
           raise(
             DeliveryMethodNotDefined,

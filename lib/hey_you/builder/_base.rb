@@ -10,6 +10,11 @@ module HeyYou
         build
       end
 
+      def to_hash
+        raise NotImplementedError, 'Builder not implemented #to_hash method'
+      end
+      alias_method :to_h, :to_hash
+
       private
 
       def interpolate(notification_string, options)

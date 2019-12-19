@@ -10,6 +10,10 @@ module HeyYou
         @body = interpolate(ch_data.fetch('body'), options)
         @data = options[:data] || {}
       end
+
+      def to_hash
+        { title: title, body: body, data: data }
+      end
     end
   end
 end
