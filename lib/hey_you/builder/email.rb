@@ -12,6 +12,10 @@ module HeyYou
         @body = interpolate(ch_data.fetch('body'), options)
         @subject = interpolate(ch_data.fetch('subject'), options)
       end
+
+      def to_hash
+        { body: body, subject: subject }
+      end
     end
   end
 end
