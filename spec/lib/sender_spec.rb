@@ -14,7 +14,7 @@ RSpec.describe HeyYou::Sender do
     HeyYou::Config.instance.instance_variable_set(:@registered_channels, channels)
     HeyYou::Config.instance.instance_variable_set(:@splitter, '.')
     HeyYou::Config.configure do
-      config.collection_files = TEST_FILE
+      config.data_source.options = { collection_files: [TEST_FILE] }
     end
   end
 
