@@ -4,7 +4,7 @@ require 'dummy/user'
 RSpec.describe User do
   before do
     HeyYou::Config.configure do
-      config.collection_files = TEST_FILE
+      config.data_source.options = { collection_files: [TEST_FILE] }
     end
 
     HeyYou::Config.instance.instance_variable_set(:@registered_channels, [:push, :email])

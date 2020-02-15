@@ -5,8 +5,7 @@ RSpec.describe HeyYou::Config do
 
   describe 'attributes' do
     include_examples(
-      :have_accessors, :collection_files, :env_collection_file, :splitter,
-      :registered_channels, :logger, :log_tag, :localization, :require_all_channels
+      :have_accessors, :splitter, :registered_channels, :logger, :log_tag, :localization, :require_all_channels
     )
     include_examples :have_readers, :collection, :env_collection, :configured, :registered_receivers
   end
@@ -28,37 +27,63 @@ RSpec.describe HeyYou::Config do
       end
     end
 
-    describe 'collection_files' do
+    describe 'data source' do
       FILENAME = 'spec/fixtures/notifications.yml'
       ENV_FILENAME = 'spec/fixtures/notifications_env.yml'
 
-      before do
-        described_class.configure { config.collection_files = FILENAME }
+      context 'data source is yaml' do
+        before do
+          described_class.configure { config.data_source.options = { collection_files: [FILENAME] } }
+        end
+
+        it 'load notifications into #collection' do
+          expect(described_class.instance.collection).to eq(YAML.load_file(FILENAME))
+        end
+
+        context 'with env_collection_file' do
+          before do
+            described_class.instance_variable_set(:@configured, false)
+            described_class.instance.instance_variable_set(:@collection, nil)
+
+            described_class.configure do
+              config.data_source.options = {
+                collection_files: [FILENAME],
+                env_collection_file: ENV_FILENAME
+              }
+            end
+          end
+
+          it 'merge notifications into #collection' do
+            expected_hash = YAML.load_file(FILENAME).merge(YAML.load_file(ENV_FILENAME))
+            expect(described_class.instance.collection).to eq(expected_hash)
+          end
+        end
       end
 
-      it 'return collection file path' do
-        expect(described_class.instance.collection_files).to eq(FILENAME)
-      end
+      context 'data source is hash' do
+        let!(:hash_with_texts) { YAML.load_file('spec/fixtures/notifications.yml').merge(data: true) }
 
-      it 'load notifications into #collection' do
-        expect(described_class.instance.collection).to eq(YAML.load_file(FILENAME))
-      end
-
-      context 'with env_collection_file' do
         before do
           described_class.instance_variable_set(:@configured, false)
           described_class.instance.instance_variable_set(:@collection, nil)
-          described_class.instance.instance_variable_set(:@env_collection, nil)
 
           described_class.configure do
-            config.collection_files = FILENAME
-            config.env_collection_file = ENV_FILENAME
+            config.data_source.source_class = HeyYou::DataSource::Hash
+            config.data_source.options = { data: YAML.load_file('spec/fixtures/notifications.yml').merge(data: true) }
           end
         end
 
-        it 'merge notifications into #collection' do
-          expected_hash = YAML.load_file(FILENAME).merge(YAML.load_file(ENV_FILENAME))
-          expect(described_class.instance.collection).to eq(expected_hash)
+        it 'load notifications into #collection' do
+          expect(described_class.instance.collection).to eq(hash_with_texts)
+        end
+
+        after do
+          described_class.instance_variable_set(:@configured, false)
+          described_class.instance.instance_variable_set(:@collection, nil)
+          described_class.configure do
+            config.data_source.source_class = HeyYou::DataSource::Yaml
+            config.data_source.options = { collection_files: [FILENAME] }
+          end
         end
       end
     end

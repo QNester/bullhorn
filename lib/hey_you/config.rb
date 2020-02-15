@@ -2,6 +2,7 @@ require 'yaml'
 require 'hey_you/config/conigurable'
 require 'hey_you/config/push'
 require 'hey_you/config/email'
+require 'hey_you/config/data_source'
 
 #
 # @config REQUIRED collection_file [String] - File path for general notifications file
@@ -34,9 +35,8 @@ module HeyYou
 
     attr_reader   :collection, :env_collection, :configured, :registered_receivers
     attr_accessor(
-      :collection_files, :env_collection_file, :splitter,
-      :registered_channels, :localization, :logger, :log_tag,
-      :require_all_channels
+      :splitter, :registered_channels, :localization, :logger, :log_tag,
+      :require_all_channels, :data_source
     )
 
     def initialize
@@ -47,13 +47,6 @@ module HeyYou
       @localization ||= DEFAULTS[:localization]
       @require_all_channels = DEFAULTS[:require_all_channels]
       define_ch_config_methods
-    end
-
-    def collection_file
-      @collection_files || raise(
-        CollectionFileNotDefined,
-        'You must define HeyYou::Config.collection_files'
-      )
     end
 
     def collection
@@ -84,6 +77,10 @@ module HeyYou
       logger&.info("[#{log_tag}] #{msg} ")
     end
 
+    def data_source
+      DataSource.instance
+    end
+
     private
 
     def define_ch_config_methods
@@ -101,21 +98,8 @@ module HeyYou
       self.class.send(:define_method, ch, method_proc)
     end
 
-    # Load yaml from collection_file and merge it with yaml from env_collection_file
     def load_collection
-      @collection_files = [collection_files] if collection_files.is_a?(String)
-      notification_collection = {}
-      collection_files.each do |file|
-        notification_collection.merge!(YAML.load_file(file))
-      end
-      notification_collection.merge!(env_collection)
-    end
-
-    def load_env_collection
-      if env_collection_file
-        return YAML.load_file(env_collection_file) rescue { }
-      end
-      {}
+      data_source.load_data
     end
   end
 end
