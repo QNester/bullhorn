@@ -1,4 +1,4 @@
-# HeyYou [Alpha]
+# HeyYou
 [![Build Status](https://travis-ci.com/QNester/hey-you.svg?branch=master)](https://travis-ci.com/QNester/hey-you#)
 [![Gem Version](https://badge.fury.io/rb/hey-you.svg)](https://badge.fury.io/rb/hey-you)
 
@@ -44,15 +44,18 @@ Or install it yourself as:
 First, you must configure HeyYou. Example:
 ```ruby
   HeyYou::Config.configure do
-    config.collection_files = ['config/notifications.yml']
+    config.data_source.options = { collection_files: ['config/notifications.yml'] }
     config.email.from = 'noreply@example-mail.com'
     config.push.fcm_token = 'fcm_server_key'
   end
 ```
 #### Required settings
 Options for gem base work.
-##### Base
-* __config.collection_files__ - File or files contained all your notifications texts.
+##### Data Source
+* __config.data_source.source_class__ - Class implemented instance method `load_collections` returning hash (by default HeyYou::DataSource::Yaml)
+* __config.data_source.options__ - Arguments for source_class. This options will be passed to init `source_class`
+OR
+* __config.data_source.source_instance__ - Instance of source class implemented `load_collections`
 ##### Push
 * __config.push.fcm_token__ - Required setting for push channel. You can not send
 push messages if setting was not set. You should set it to equal your fcm server key.
@@ -77,9 +80,10 @@ notifications for build should be nested in `I18n.locale` key. Default: `false`.
 # config/initializers/hey-you.rb
 HeyYou::Config.configure do
   ...
-  config.collection_files = Rails.application.config.i18n.available_locales.map do |locale|
+  i18n_files = Rails.application.config.i18n.available_locales.map do |locale|
     "config/notifications/#{locale}.yml" 
   end 
+  config.data_source.options = { collection_files: i18n_files }
   ...
 end 
 ```
@@ -187,7 +191,7 @@ for method? This is string key for builder. Read next to understand it.
 
 ### Build your notification
 HeyYou Notification Builder - good system for store your notifications in one place.
-You need create yml file with follow format:
+By default you need create yml file with follow format:
 ```yaml
 # config/notifications/collection.yml
 any_key:
@@ -213,6 +217,46 @@ interpolation keys then error will be raised. After successful interpolation
 notification will send for all available channels for receiver: 
 1) Send push via fcm
 2) Send email
+
+#### Data Source
+Often we need store our notification text in another data source, not int yml files. HeyYou has flexible
+system for data source. All what you need - make your own provider source and pass it to config. For example:
+
+```ruby
+class NotificationText < ApplicationRecord
+  def self.load_collections
+    # load colelctions from database to hash
+    # THIS METHOD MUST returns hash! 
+  end
+end
+```
+
+```ruby
+HeyYou::Config.configure do
+  # NotificationText is a rails model
+  config.data_source.source_instance = NotificationText
+end
+```
+
+HeyYou will pull texts from database to memory with initialize your application after this configuration. Builder
+will build your texts successfully.
+
+HeyYou by default contains only two data sources:
+1. `HeyYou::DataSource::Yaml` - for store notifications collections in data. For example: 
+```ruby
+  HeyYou::Config.configure do
+    config.data_source.source_class = HeyYou::DataSource::Yaml
+    config.data_source.options = { collection_files: ['config/notifications.yml'] }
+  end
+```
+2. `HeyYou::DataSource::Hash` - store notification everywhere you want and pass to HeyYou only hash
+```ruby
+  config.data_source.source_class = HeyYou::DataSource::Yaml
+  config.data_source.options = { data: { welcome: { email: { ... }, push: { ... } } } }
+```
+
+__Pay attention__: for difference source we should pass difference options.
+
 
 ### Send notification
 Receiver not only one way to send notification. You can send it using `HeyYou::Sender`.
