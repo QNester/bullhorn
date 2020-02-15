@@ -52,10 +52,12 @@ First, you must configure HeyYou. Example:
 #### Required settings
 Options for gem base work.
 ##### Data Source
-* __config.data_source.source_class__ - Class implemented instance method `load_collections` returning hash (by default HeyYou::DataSource::Yaml)
+* __config.data_source.source_class__ - Class implemented instance method `load_collections` returning hash (by default `HeyYou::DataSource::Yaml`)
 * __config.data_source.options__ - Arguments for source_class. This options will be passed to init `source_class`
 OR
 * __config.data_source.source_instance__ - Instance of source class implemented `load_collections`
+
+Read more about data source in [data source](#data-source-1).d
 ##### Push
 * __config.push.fcm_token__ - Required setting for push channel. You can not send
 push messages if setting was not set. You should set it to equal your fcm server key.
@@ -65,8 +67,6 @@ push messages if setting was not set. You should set it to equal your fcm server
 #### Optional settings
 Additional options for configure your notifications.
 #### Base
-* __config.env_collection_file__ - File contained all your notifications texts for
-environment. You can set it like `notifications.#{ENV['APP_ENV]}.yml`
 * __config.splitter__ - Chars for split notification keys for 
 builder. Default: `.`
 * __config.registered_channels__ - Avialable channels for your
