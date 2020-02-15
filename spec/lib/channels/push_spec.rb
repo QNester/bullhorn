@@ -4,7 +4,7 @@ RSpec.describe HeyYou::Channels::Push do
   before do
     HeyYou::Config.instance.instance_variable_set(:@splitter, '.')
     HeyYou::Config.configure do
-      config.collection_files = TEST_FILE
+      config.data_source.options = { collection_files: [TEST_FILE] }
     end
   end
 
