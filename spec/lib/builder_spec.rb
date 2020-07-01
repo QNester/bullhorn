@@ -111,5 +111,17 @@ RSpec.describe HeyYou::Builder do
         expect { subject }.to raise_error(described_class::DataNotFound)
       end
     end
+
+    context 'pass `only` option' do
+      let!(:pass_variable) { SecureRandom.uuid }
+      let!(:ch) { %i[push email].sample }
+      let!(:skip_ch) { (%i[push email] - [ch]).sample }
+      let!(:options) { { only: [ch], pass_variable: pass_variable } }
+
+      it 'make builder only for channel' do
+        expect(subject.send(ch)).to be_instance_of(Object.const_get("#{described_class}::#{ch.capitalize}"))
+        expect(subject.send(skip_ch)).to eq(nil)
+      end
+    end
   end
 end
