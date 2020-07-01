@@ -20,7 +20,7 @@ him easy.
 
 
 ## Requirements
- * Ruby 2.3.0 min (rspec works with ruby 2.3.3, 2.4.2, 2.5.3)
+ * Ruby 2.5.0 min (rspec works with ruby 2.5.0, 2.6.0, 2.7.0)
  * FCM - Gem send push notification using [fcm gem](https://github.com/spacialdb/fcm).
  You need *fcm server key* to successful configure push notifications.
 

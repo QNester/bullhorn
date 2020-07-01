@@ -13,11 +13,14 @@ module HeyYou
     # Define methods for each registered channel. After initialize you can use
     #   `instance.<ch_name>`. It will be return instance of HeyYou::Builder::<YOUR_CHANNEL_NAME>
     #
+    # Skip builder for excluded channels (not included in `only` option)
+    #
+    # @param [String] key - notification key for fetching notification data from collection
     def initialize(key, **options)
       @data = fetch_from_collection_by_key(key, options[:locale])
       @options = options
       config.registered_channels.each do |ch|
-        init_channel_builder(ch, key)
+        init_channel_builder(ch, key) if channel_allowed_by_only?(ch, options[:only])
       end
     end
 
@@ -59,6 +62,12 @@ module HeyYou
       end
       return data if data
       raise DataNotFound, "collection data not found for `#{keys.join(config.splitter)}`"
+    end
+
+    def channel_allowed_by_only?(ch, only)
+      return true unless only
+      return only.map(&:to_sym).include?(ch.to_sym) if only.is_a?(Array)
+      only.to_sym == ch.to_sym
     end
 
     class UnknownLocale < StandardError; end

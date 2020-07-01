@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "mail", '~> 2.7'
   spec.add_runtime_dependency "i18n", '~> 1.0'
 
-  spec.add_development_dependency "rake", '~> 10.5'
+  spec.add_development_dependency "rake", '~> 13.0'
   spec.add_development_dependency "rspec", '~> 3.7'
   spec.add_development_dependency "webmock", '~> 3.4'
   spec.add_development_dependency "ffaker", '~> 2.9'
