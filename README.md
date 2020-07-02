@@ -163,8 +163,8 @@ fetching values required to send notification. For push channel
 expected that proc will return receiver's fcm registration id. For
 email expected that proc will return receiver's email address.
 
-You can pass options for receiver channels. You must pass proc with receive_data to `:subject` key and options 
-pass to `:options` key:
+You can pass options and sending condition for receiver channels. You must pass proc with receive_data to `:subject` key and options 
+pass to `:options` key. `if` key should be passed for sending condition:
 
 ```ruby
 class User < Model
@@ -172,7 +172,11 @@ class User < Model
   
   receive(
     push: -> { push_token.value }, 
-    email: { subject: -> { email }, options: { mailer_class: UserMailer, mailer_method: :notify! } }
+    email: { 
+      subject: -> { email }, 
+      if: -> { email_notifications? },
+      options: { mailer_class: UserMailer, mailer_method: :notify! } 
+    }
   )
 end
 ``` 
@@ -188,6 +192,15 @@ user.send_notification('for_users.hello')
 Last command will fetch notifications credentials for user instance
 and will try to send SMS, Push and Email for it. What argument we pass
 for method? This is string key for builder. Read next to understand it.
+
+Sometimes you need send notification independent on user's notification settings. For this case you can use
+`force` option in `#send_notification`:
+```ruby
+user = User.find(1)
+user.settings.update!(email_notifications: false)
+user.send_notification('for_users.hello') #=> will not send notification
+user.send_notification('for_users.hello', force: true) #=> will send notification
+```
 
 ### Build your notification
 HeyYou Notification Builder - good system for store your notifications in one place.

@@ -1,5 +1,10 @@
 # Changelog for hey-you gem
 
+## 1.2.2
+- Improvement: `if` condition for receiver (if condition `false` - sending will be skipped).
+- Improvement: `force` option - send message independent on `if` condition.
+
+
 ### 1.2.1
 - Improvement: Builder will not make channel builder if it skipped by only option
 
