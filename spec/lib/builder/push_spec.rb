@@ -6,7 +6,7 @@ RSpec.describe HeyYou::Builder::Push do
   describe '#to_hash' do
     let!(:data) { { 'title' => 'hello', 'body' => 'hello, world' } }
     subject do
-      described_class.new({ 'push' => data }, 'test').to_hash
+      described_class.new(data, 'test').to_hash
     end
 
     it 'returns subject and body' do

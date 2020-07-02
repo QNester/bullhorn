@@ -74,9 +74,11 @@ module HeyYou
         if receiver_data[ch].is_a?(Hash)
           me = self
           self.send(:define_method, "#{ch}_ch_receive_info", receiver_data[ch].fetch(:subject))
+          self.send(:define_method, "#{ch}_ch_receive_condition", receiver_data[ch].fetch(:if, -> { true }))
           self.send(:define_method, "#{ch}_ch_receive_options", -> { me.receiver_data[ch].fetch(:options, {}) })
         else
           self.send(:define_method, "#{ch}_ch_receive_info", receiver_data[ch])
+          self.send(:define_method, "#{ch}_ch_receive_condition", -> { true })
           self.send(:define_method, "#{ch}_ch_receive_options", -> { {} })
         end
       end

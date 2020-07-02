@@ -15,6 +15,7 @@ module HeyYou
       # @input notification_key [String] - key for notification builder
       # @input options [Hash]
       #   @option only [String/Array[String]] - whitelist for using channels
+      #   @option force [Boolean] - ignore `if` for receiver
       #
       def send_to(receiver, notification_key, **options)
         unless receiver_valid?(receiver)
@@ -29,6 +30,10 @@ module HeyYou
       def send!(notification_key, receiver, **options)
         to_hash = {}
         receiver.class.receiver_channels.each do |ch|
+          if !options[:force] && !receiver.public_send("#{ch}_ch_receive_condition")
+            next
+          end
+
           to_hash[ch] = {
             # Fetch receiver's info for sending: phone_number, email, etc
             subject: receiver.public_send("#{ch}_ch_receive_info"),
@@ -46,7 +51,7 @@ module HeyYou
         config.registered_channels.each do |ch|
           if channel_allowed?(ch, receive_info, builder, options) && builder.respond_to?(ch) && builder.public_send(ch)
             config.log(
-              "Send #{ch}-message to #{receive_info[ch][:subject]} with data: #{builder.public_send(ch).data}" \
+              "Send #{ch}-message to `#{receive_info[ch][:subject]}` with data: #{builder.public_send(ch).data}" \
               " and options: #{receive_info[ch][:options]}"
             )
             receive_options = receive_info[ch].fetch(:options, {}) || {}
@@ -54,7 +59,7 @@ module HeyYou
               builder, to: receive_info[ch][:subject], **receive_options
             )
           else
-            config.log("Channel #{ch} not allowed.")
+            config.log("Channel #{ch} not allowed or sending condition doesn't return truthy result.")
           end
         end
         response
