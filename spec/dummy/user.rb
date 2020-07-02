@@ -2,11 +2,6 @@ require_relative 'push_token'
 
 class User
   extend HeyYou::Receiver
-  #
-  # receive(
-  #   push: -> { push_token.value },
-  #   email: -> { email[:address] }
-  # )
 
   def number
     FFaker
@@ -14,6 +9,14 @@ class User
 
   def push_token
     @push_token ||= PushToken.new
+  end
+
+  def falsey_condition
+    false
+  end
+
+  def truthy_condition
+    true
   end
 
   def email

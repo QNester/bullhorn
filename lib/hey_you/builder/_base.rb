@@ -23,10 +23,8 @@ module HeyYou
         raise InterpolationError, "Failed build notification string `#{notification_string}`: #{err.message}"
       end
 
-      def ch_data
-        data.fetch(current_builder_name)
-      end
 
+      alias ch_data data
       alias channel_data ch_data
 
       def ch_options
