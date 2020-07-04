@@ -1,6 +1,10 @@
 # Changelog for hey-you gem
 
-## 1.2.2
+### 1.2.3
+- Improvement: fix ruby 2.7 warnings
+- Fix: fix `NoMethodError` in `sender.rb` when channel must be ignored by `if` 
+
+### 1.2.2
 - Improvement: `if` condition for receiver (if condition `false` - sending will be skipped).
 - Improvement: `force` option - send message independent on `if` condition.
 
