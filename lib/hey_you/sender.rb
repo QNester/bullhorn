@@ -68,7 +68,10 @@ module HeyYou
       private
 
       def channel_allowed?(ch, to, builder, **options)
-        condition = to[ch].is_a?(Hash) ? to[ch.to_sym][:subject] || to[ch.to_s][:subject] : to[ch.to_sym] || to[ch.to_s]
+        data_in_subject = to[ch.to_sym]&.fetch(:subject, nil) || to[ch.to_s]&.fetch(:subject, nil)
+        data_in_core = to[ch.to_sym] || to[ch.to_s]
+
+        condition = to[ch].is_a?(Hash) ? data_in_subject : data_in_core
         return false unless condition
         channel_allowed_by_only?(ch, options[:only]) && !builder.send(ch).nil?
       end
