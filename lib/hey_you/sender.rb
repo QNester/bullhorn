@@ -42,14 +42,14 @@ module HeyYou
           }
         end
 
-        send_to_receive_info(notification_key, to_hash, options)
+        send_to_receive_info(notification_key, to_hash, **options)
       end
 
       def send_to_receive_info(notification_key, receive_info, **options)
-        builder = Builder.new(notification_key, options)
+        builder = Builder.new(notification_key, **options)
         response = {}
         config.registered_channels.each do |ch|
-          if channel_allowed?(ch, receive_info, builder, options) && builder.respond_to?(ch) && builder.public_send(ch)
+          if channel_allowed?(ch, receive_info, builder, **options) && builder.respond_to?(ch) && builder.public_send(ch)
             config.log(
               "Send #{ch}-message to `#{receive_info[ch][:subject]}` with data: #{builder.public_send(ch).data}" \
               " and options: #{receive_info[ch][:options]}"
@@ -68,7 +68,10 @@ module HeyYou
       private
 
       def channel_allowed?(ch, to, builder, **options)
-        condition = to[ch].is_a?(Hash) ? to[ch.to_sym][:subject] || to[ch.to_s][:subject] : to[ch.to_sym] || to[ch.to_s]
+        data_in_subject = to[ch.to_sym]&.fetch(:subject, nil) || to[ch.to_s]&.fetch(:subject, nil)
+        data_in_core = to[ch.to_sym] || to[ch.to_s]
+
+        condition = to[ch].is_a?(Hash) ? data_in_subject : data_in_core
         return false unless condition
         channel_allowed_by_only?(ch, options[:only]) && !builder.send(ch).nil?
       end

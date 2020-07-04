@@ -22,7 +22,7 @@ module HeyYou
           raise InvalidDataSourceError, 'You must pass `config.data_source.source_class` in configuration.'
         end
 
-        source_class.new(options).load_collections
+        source_class.new(**options).load_collections
       rescue ArgumentError => err
         problem_fields =
           err.message.gsub(/missing keyword(.?):\s/, '').split(', ').map { |f| "`#{f}`" }.join(', ')

@@ -83,7 +83,7 @@ RSpec.describe User do
     let!(:key) { 'rspec.test_notification' }
     let!(:options) { { force: true } }
 
-    subject { user.send_notification(key, options) }
+    subject { user.send_notification(key, **options) }
 
     it 'call Sender send_to' do
       expect(HeyYou::Sender).to receive(:send_to).with(user, key, options)
