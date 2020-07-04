@@ -8,7 +8,7 @@ RSpec.describe HeyYou::DataSource::Yaml do
   describe '#load_collections' do
     let(:file) { 'spec/fixtures/notifications.yml' }
     let(:options) { { collection_files: file } }
-    subject { described_class.new(options).load_collections }
+    subject { described_class.new(**options).load_collections }
 
     it 'load notifications into #collection' do
       expect(subject).to eq(YAML.load_file(file))

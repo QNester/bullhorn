@@ -7,13 +7,13 @@ module HeyYou
       class << self
         def send!(builder, to:, **options)
           method = config.email.use_default_mailing ? :send_via_mail : :send_via_custom_class
-          public_send(method, builder, to, options)
+          public_send(method, builder, to, **options)
         end
 
         # Send email via custom class instance.
         def send_via_custom_class(builder, to, **options)
-          mailer = mailer_class_from_builder(builder, options)
-          mailer_method = mailer_method_from_builder(mailer, builder, options)
+          mailer = mailer_class_from_builder(builder, **options)
+          mailer_method = mailer_method_from_builder(mailer, builder, **options)
           delivery_method = options[:delivery_method] ||
             builder.email.delivery_method ||
             config.email.default_delivery_method

@@ -12,7 +12,7 @@ RSpec.describe HeyYou::Builder do
   describe '#new' do
     let!(:key) { 'rspec.test_notification' }
 
-    subject { described_class.new(key, options) }
+    subject { described_class.new(key, **options) }
 
     context 'pass options for interpolate' do
       let!(:pass_variable) { SecureRandom.uuid }
