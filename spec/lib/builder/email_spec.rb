@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe HeyYou::Builder::Email do
-  include_examples :have_readers, :subject, :body, :layout, :mailer_class, :mailer_method
+  include_examples :have_readers, :subject, :body, :layout, :mailer_class, :mailer_method, :body_parts
 
   describe '#to_hash' do
     let!(:data) { { 'subject' => 'hello', 'body' => 'hello, world' } }
@@ -10,7 +10,7 @@ RSpec.describe HeyYou::Builder::Email do
     end
 
     it 'returns subject and body' do
-      expect(subject).to eq(subject: data['subject'], body: data['body'])
+      expect(subject).to eq(subject: data['subject'], body: data['body'], body_parts: nil)
     end
   end
 end
