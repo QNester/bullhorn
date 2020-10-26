@@ -23,7 +23,7 @@ module HeyYou
       def interpolate_each(notification_hash, options)
         return notification_hash unless notification_hash.is_a?(Hash)
 
-        notification_hash.each do |_, v|
+        notification_hash.each do |k, v|
           next interpolate_each(v, options) if v.is_a?(Hash)
 
           begin
