@@ -38,7 +38,7 @@ module HeyYou
             # Fetch receiver's info for sending: phone_number, email, etc
             subject: receiver.public_send("#{ch}_ch_receive_info"),
             # Fetch receiver's options like :mailer_class
-            options: receiver.public_send("#{ch}_ch_receive_options") || {}
+            options: receiver.public_send("#{ch}_ch_receive_options").merge(options) || {}
           }
         end
 

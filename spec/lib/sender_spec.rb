@@ -65,7 +65,7 @@ RSpec.describe HeyYou::Sender do
     it 'call channel\'s #send! for each allowed registered channel' do
       channels.each do |ch|
         expect(HeyYou::Channels.const_get(ch.to_s.capitalize)).to(
-          receive(:send!).with(instance_of(HeyYou::Builder), to: to[ch][:subject], **to[ch][:options])
+          receive(:send!).with(instance_of(HeyYou::Builder), to: to[ch][:subject], **to[ch][:options].merge(options))
         )
       end
 
