@@ -1,4 +1,7 @@
 # Changelog for hey-you gem
+## 1.3.1/1.3.2/1.3.3
+Fixing bugs
+
 ## 1.3.0
 - Feature: `body_part` in email builder.
 
