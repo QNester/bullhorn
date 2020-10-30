@@ -10,7 +10,7 @@ module HeyYou
         @mailer_method = ch_data.fetch('mailer_method', nil)
         @delivery_method = ch_data.fetch('delivery_method', nil)
         @body = interpolate(ch_data['body'], options) if ch_data['body']
-        @body_parts = interpolate_each(ch_data.fetch('body_parts', nil), options)
+        @body_parts = interpolate_each(ch_data.fetch('body_parts', nil)&.deep_dup, options)
         @subject = interpolate(ch_data.fetch('subject'), options)
       end
 
@@ -28,7 +28,7 @@ module HeyYou
 
           begin
             notification_hash[k] = v % options
-          rescue KeyError
+          rescue KeyError => err
             raise InterpolationError, "Failed build notification string `#{v}`: #{err.message}"
           end
         end
