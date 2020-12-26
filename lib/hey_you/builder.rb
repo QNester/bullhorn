@@ -37,8 +37,8 @@ module HeyYou
         return
       end
 
-      ch_builder =
-        HeyYou::Builder.const_get("#{ch.downcase.capitalize}").new(data[ch.to_s], key, **options)
+      klass_name = ch.to_s.downcase.split('_').map(&:capitalize).join
+      ch_builder = HeyYou::Builder.const_get(klass_name).new(data[ch.to_s], key, **options)
       instance_variable_set("@#{ch}".to_sym, ch_builder)
 
       define_ch_method(ch)

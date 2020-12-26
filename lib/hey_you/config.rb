@@ -62,6 +62,13 @@ module HeyYou
       @registered_receivers << receiver_class
     end
 
+    def validate_config
+      registered_channels.each do |ch|
+        ch_config = send(ch)
+        ch_config.validate_config if ch_config.respond_to?(:validate_config)
+      end
+    end
+
     # Registrate new custom channel.
     # For successful registration, in application must be exists:
     # 1. HeyYou::Channels::<YOUR_CHANNEL_NAME> < HeyYou::Channels::Base
@@ -94,7 +101,8 @@ module HeyYou
     # For example, if ch == 'push' will define method #push for class instance.
     # New method will return instance of channel config instance
     def define_ch_config_method(ch)
-      method_proc = -> { self.class.const_get(ch.capitalize).config }
+      klass_name = ch.to_s.split('_').map(&:capitalize).join
+      method_proc = -> { self.class.const_get(klass_name).config }
       self.class.send(:define_method, ch, method_proc)
     end
 

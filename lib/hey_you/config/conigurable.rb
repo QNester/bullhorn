@@ -13,6 +13,7 @@ module HeyYou
       def configure(&block)
         @configured ? raise(AlreadyConfiguredError, 'You already configure HeyYou') : instance_eval(&block)
         @configured = true
+        instance.validate_config if instance.respond_to?(:validate_config)
       end
 
       def config
@@ -20,6 +21,7 @@ module HeyYou
       end
 
       class AlreadyConfiguredError < StandardError; end
+      class RequiredConfigsNotPassed < StandardError; end
     end
   end
 end
