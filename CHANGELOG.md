@@ -1,9 +1,12 @@
 # Changelog for hey-you gem
-## 1.3.1/1.3.2/1.3.3/1.3.4
-Fixing bugs
 
-## 1.3.0
+# 1.4.0
+- Improvement: configs validations for custom classes
+- Improvement: allow custom classes with '_' in name
+
+## 1.3.0 - 1.3.4
 - Feature: `body_part` in email builder.
+- Fixes
 
 ### 1.2.3
 - Improvement: fix ruby 2.7 warnings
