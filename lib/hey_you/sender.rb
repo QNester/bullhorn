@@ -55,7 +55,8 @@ module HeyYou
               " and options: #{receive_info[ch][:options]}"
             )
             receive_options = receive_info[ch].fetch(:options, {}) || {}
-            response[ch] = Channels.const_get(ch.to_s.capitalize).send!(
+            klass_name = ch.to_s.downcase.split('_').map(&:capitalize).join
+            response[ch] = Channels.const_get(klass_name).send!(
               builder, to: receive_info[ch][:subject], **receive_options
             )
           else
