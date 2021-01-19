@@ -1,6 +1,9 @@
 # Changelog for hey-you gem
 
-# 1.4.0
+## 1.4.1
+- Improvement: custom complex classes in Sender
+
+## 1.4.0
 - Improvement: configs validations for custom classes
 - Improvement: allow custom classes with '_' in name
 
