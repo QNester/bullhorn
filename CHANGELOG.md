@@ -1,5 +1,8 @@
 # Changelog for hey-you gem
 
+## 1.4.2
+- Improvement: Freeze loaded collection to prevent changes notification templates in memory
+
 ## 1.4.1
 - Improvement: custom complex classes in Sender
 
