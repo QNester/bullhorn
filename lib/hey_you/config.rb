@@ -50,11 +50,11 @@ module HeyYou
     end
 
     def collection
-      @collection ||= load_collection
+      @collection ||= deep_freeze(load_collection)
     end
 
     def env_collection
-      @env_collection ||= load_env_collection
+      @env_collection ||= deep_freeze(load_env_collection)
     end
 
     def registrate_receiver(receiver_class)
@@ -108,6 +108,14 @@ module HeyYou
 
     def load_collection
       data_source.load_data
+    end
+
+    def deep_freeze(val)
+      if val.respond_to? :each
+        val.class == Hash ? val.each { |_, val| deep_freeze(val) } : val.each { |val| deep_freeze(val) }
+      end
+
+      val.freeze unless val.frozen?
     end
   end
 end
